@@ -42,7 +42,9 @@
 }
 
 -(void)mouseDown:(NSEvent *)theEvent {
-    NSArray *imageArray = [ImageStructureAnalyser topLevelWindowToBinaryArrayWithBlockSize:8];
+    int blockSize = 8;
+    
+    NSArray *imageArray = [ImageStructureAnalyser topLevelWindowToBinaryArrayWithBlockSize:blockSize];
     
     self.physicsWorld.gravity = CGVectorMake(0, -10);
     
@@ -57,7 +59,37 @@
     _sprite.physicsBody.dynamic = YES;
     [self addChild:_sprite];
     
-    for (int i = 0; i < 5; i++) {
+    int blocksWide = (int)imageArray.count;
+    int blocksHigh = (int)[(NSArray*)[imageArray objectAtIndex:0] count];
+    
+    // Draw the blocks to the screen as images
+    for (int x = 0; x < blocksWide; x++) {
+        for (int y = 0; y < blocksHigh; y++) {
+            NSNumber *currentColor = imageArray[x][y];
+            
+            if ([currentColor isEqualToNumber:[NSNumber numberWithInt:1]]) {
+                SKSpriteNode *block = [SKSpriteNode spriteNodeWithImageNamed:@"block"];
+                block = [SKSpriteNode spriteNodeWithImageNamed:@"block"];
+                block.position = CGPointMake(x*blockSize,(blocksHigh * blockSize) - y*blockSize);
+                
+                //NSImageView *dot =[[NSImageView alloc] initWithFrame:CGRectMake(x*blockSize,(blocksHigh * blockSize) - y*blockSize,blockSize,blockSize)];
+                
+                block.scale = 1;
+                block.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:block.size];
+                block.physicsBody.dynamic = NO;
+                block.physicsBody.allowsRotation = NO;
+                block.physicsBody.usesPreciseCollisionDetection = YES;
+                block.physicsBody.affectedByGravity = NO;
+                
+                [_blocks addObject:block];
+                [self addChild:block];
+                
+            }
+        }
+    }
+    
+    
+  /*  for (int i = 0; i < 5; i++) {
         SKSpriteNode *block = [SKSpriteNode spriteNodeWithImageNamed:@"block"];
         block = [SKSpriteNode spriteNodeWithImageNamed:@"block"];
         block.position = CGPointMake(location.x + (block.size.width * i), location.y);
@@ -70,7 +102,7 @@
         
         [_blocks addObject:block];
         [self addChild:block];
-    }
+    }*/
 }
 
 -(void)renderPlayerPosition {
