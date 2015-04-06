@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		2E7C16E509A2C35FDA790CC2 /* libPods-TestGame.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 71F041A8B1DCE07B9545B285 /* libPods-TestGame.a */; };
+		73174BC01AD20542000ACAB7 /* Window.m in Sources */ = {isa = PBXBuildFile; fileRef = 73174BBF1AD20542000ACAB7 /* Window.m */; };
 		73AC7A481AD1A5C900393598 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 73AC7A471AD1A5C900393598 /* AppDelegate.m */; };
 		73AC7A4A1AD1A5C900393598 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 73AC7A491AD1A5C900393598 /* main.m */; };
 		73AC7A4D1AD1A5C900393598 /* GameScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 73AC7A4C1AD1A5C900393598 /* GameScene.m */; };
@@ -30,6 +31,8 @@
 /* Begin PBXFileReference section */
 		075EE40033CDF5C9C796EEB0 /* Pods-TestGame.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TestGame.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TestGame/Pods-TestGame.debug.xcconfig"; sourceTree = "<group>"; };
 		71F041A8B1DCE07B9545B285 /* libPods-TestGame.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TestGame.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		73174BBE1AD20542000ACAB7 /* Window.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Window.h; sourceTree = "<group>"; };
+		73174BBF1AD20542000ACAB7 /* Window.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Window.m; sourceTree = "<group>"; };
 		73AC7A411AD1A5C900393598 /* TestGame.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestGame.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		73AC7A451AD1A5C900393598 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		73AC7A461AD1A5C900393598 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -101,6 +104,8 @@
 				73AC7A4B1AD1A5C900393598 /* GameScene.h */,
 				73AC7A4C1AD1A5C900393598 /* GameScene.m */,
 				73AC7A4E1AD1A5C900393598 /* GameScene.sks */,
+				73174BBE1AD20542000ACAB7 /* Window.h */,
+				73174BBF1AD20542000ACAB7 /* Window.m */,
 				73AC7A501AD1A5C900393598 /* Images.xcassets */,
 				73AC7A521AD1A5C900393598 /* MainMenu.xib */,
 				73AC7A441AD1A5C900393598 /* Supporting Files */,
@@ -281,6 +286,7 @@
 				73AC7A4A1AD1A5C900393598 /* main.m in Sources */,
 				73AC7A4D1AD1A5C900393598 /* GameScene.m in Sources */,
 				73AC7A481AD1A5C900393598 /* AppDelegate.m in Sources */,
+				73174BC01AD20542000ACAB7 /* Window.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
