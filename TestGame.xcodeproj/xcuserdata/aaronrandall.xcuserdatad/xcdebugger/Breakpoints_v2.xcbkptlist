@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "TestGame/GameScene.m"
-            timestampString = "450023514.249511"
+            timestampString = "450024951.210579"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "133"
-            endingLineNumber = "133"
+            startingLineNumber = "131"
+            endingLineNumber = "131"
             landmarkName = "-renderPlayerPosition"
             landmarkType = "5">
          </BreakpointContent>

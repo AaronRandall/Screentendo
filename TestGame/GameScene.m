@@ -46,10 +46,11 @@
     
     NSArray *imageArray = [ImageStructureAnalyser topLevelWindowToBinaryArrayWithBlockSize:blockSize];
     
-    self.physicsWorld.gravity = CGVectorMake(0, -10);
+    //self.physicsWorld.gravity = CGVectorMake(0, -10);
     
     CGPoint location = [theEvent locationInNode:self];
     _sprite = [SKSpriteNode spriteNodeWithImageNamed:@"player"];
+    _sprite.size = CGSizeMake(blockSize, blockSize * 2);
     _sprite.position = CGPointMake(location.x, location.y + 230);
     _sprite.scale = 1;
     _sprite.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:_sprite.size];
@@ -69,11 +70,8 @@
             
             if ([currentColor isEqualToNumber:[NSNumber numberWithInt:1]]) {
                 SKSpriteNode *block = [SKSpriteNode spriteNodeWithImageNamed:@"block"];
-                block = [SKSpriteNode spriteNodeWithImageNamed:@"block"];
+                block.size = CGSizeMake(blockSize, blockSize);
                 block.position = CGPointMake(x*blockSize,(blocksHigh * blockSize) - y*blockSize);
-                
-                //NSImageView *dot =[[NSImageView alloc] initWithFrame:CGRectMake(x*blockSize,(blocksHigh * blockSize) - y*blockSize,blockSize,blockSize)];
-                
                 block.scale = 1;
                 block.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:block.size];
                 block.physicsBody.dynamic = NO;
@@ -88,7 +86,7 @@
         }
     }
     
-    
+    // Hardcoded blocks
   /*  for (int i = 0; i < 5; i++) {
         SKSpriteNode *block = [SKSpriteNode spriteNodeWithImageNamed:@"block"];
         block = [SKSpriteNode spriteNodeWithImageNamed:@"block"];
