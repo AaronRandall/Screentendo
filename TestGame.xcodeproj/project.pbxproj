@@ -8,7 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		2E7C16E509A2C35FDA790CC2 /* libPods-TestGame.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 71F041A8B1DCE07B9545B285 /* libPods-TestGame.a */; };
-		73174BC01AD20542000ACAB7 /* Window.m in Sources */ = {isa = PBXBuildFile; fileRef = 73174BBF1AD20542000ACAB7 /* Window.m */; };
+		73174BC41AD28665000ACAB7 /* ImageStructureAnalyser.m in Sources */ = {isa = PBXBuildFile; fileRef = 73174BC31AD28665000ACAB7 /* ImageStructureAnalyser.m */; };
+		73174BD41AD2CBAE000ACAB7 /* Window.m in Sources */ = {isa = PBXBuildFile; fileRef = 73174BCD1AD2CBAE000ACAB7 /* Window.m */; };
+		73174BD51AD2CBAE000ACAB7 /* KPCScaleToFillNSImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 73174BCF1AD2CBAE000ACAB7 /* KPCScaleToFillNSImageView.m */; };
+		73174BD61AD2CBAE000ACAB7 /* NSMutableArray+MultidimensionalAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 73174BD11AD2CBAE000ACAB7 /* NSMutableArray+MultidimensionalAdditions.m */; };
+		73174BD71AD2CBAE000ACAB7 /* NSImage+ImageProcessing.m in Sources */ = {isa = PBXBuildFile; fileRef = 73174BD31AD2CBAE000ACAB7 /* NSImage+ImageProcessing.m */; };
 		73AC7A481AD1A5C900393598 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 73AC7A471AD1A5C900393598 /* AppDelegate.m */; };
 		73AC7A4A1AD1A5C900393598 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 73AC7A491AD1A5C900393598 /* main.m */; };
 		73AC7A4D1AD1A5C900393598 /* GameScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 73AC7A4C1AD1A5C900393598 /* GameScene.m */; };
@@ -31,8 +35,16 @@
 /* Begin PBXFileReference section */
 		075EE40033CDF5C9C796EEB0 /* Pods-TestGame.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TestGame.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TestGame/Pods-TestGame.debug.xcconfig"; sourceTree = "<group>"; };
 		71F041A8B1DCE07B9545B285 /* libPods-TestGame.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TestGame.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		73174BBE1AD20542000ACAB7 /* Window.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Window.h; sourceTree = "<group>"; };
-		73174BBF1AD20542000ACAB7 /* Window.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Window.m; sourceTree = "<group>"; };
+		73174BC21AD28665000ACAB7 /* ImageStructureAnalyser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageStructureAnalyser.h; sourceTree = "<group>"; };
+		73174BC31AD28665000ACAB7 /* ImageStructureAnalyser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageStructureAnalyser.m; sourceTree = "<group>"; };
+		73174BCC1AD2CBAE000ACAB7 /* Window.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Window.h; sourceTree = "<group>"; };
+		73174BCD1AD2CBAE000ACAB7 /* Window.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Window.m; sourceTree = "<group>"; };
+		73174BCE1AD2CBAE000ACAB7 /* KPCScaleToFillNSImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KPCScaleToFillNSImageView.h; sourceTree = "<group>"; };
+		73174BCF1AD2CBAE000ACAB7 /* KPCScaleToFillNSImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KPCScaleToFillNSImageView.m; sourceTree = "<group>"; };
+		73174BD01AD2CBAE000ACAB7 /* NSMutableArray+MultidimensionalAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableArray+MultidimensionalAdditions.h"; sourceTree = "<group>"; };
+		73174BD11AD2CBAE000ACAB7 /* NSMutableArray+MultidimensionalAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableArray+MultidimensionalAdditions.m"; sourceTree = "<group>"; };
+		73174BD21AD2CBAE000ACAB7 /* NSImage+ImageProcessing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSImage+ImageProcessing.h"; sourceTree = "<group>"; };
+		73174BD31AD2CBAE000ACAB7 /* NSImage+ImageProcessing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSImage+ImageProcessing.m"; sourceTree = "<group>"; };
 		73AC7A411AD1A5C900393598 /* TestGame.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestGame.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		73AC7A451AD1A5C900393598 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		73AC7A461AD1A5C900393598 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -76,6 +88,31 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		73174BC11AD28619000ACAB7 /* ImageStructureAnalyser */ = {
+			isa = PBXGroup;
+			children = (
+				73174BCB1AD2CBA2000ACAB7 /* Classes */,
+				73174BC21AD28665000ACAB7 /* ImageStructureAnalyser.h */,
+				73174BC31AD28665000ACAB7 /* ImageStructureAnalyser.m */,
+			);
+			name = ImageStructureAnalyser;
+			sourceTree = "<group>";
+		};
+		73174BCB1AD2CBA2000ACAB7 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				73174BCC1AD2CBAE000ACAB7 /* Window.h */,
+				73174BCD1AD2CBAE000ACAB7 /* Window.m */,
+				73174BCE1AD2CBAE000ACAB7 /* KPCScaleToFillNSImageView.h */,
+				73174BCF1AD2CBAE000ACAB7 /* KPCScaleToFillNSImageView.m */,
+				73174BD01AD2CBAE000ACAB7 /* NSMutableArray+MultidimensionalAdditions.h */,
+				73174BD11AD2CBAE000ACAB7 /* NSMutableArray+MultidimensionalAdditions.m */,
+				73174BD21AD2CBAE000ACAB7 /* NSImage+ImageProcessing.h */,
+				73174BD31AD2CBAE000ACAB7 /* NSImage+ImageProcessing.m */,
+			);
+			name = Classes;
+			sourceTree = "<group>";
+		};
 		73AC7A381AD1A5C900393598 = {
 			isa = PBXGroup;
 			children = (
@@ -103,9 +140,8 @@
 				73AC7A471AD1A5C900393598 /* AppDelegate.m */,
 				73AC7A4B1AD1A5C900393598 /* GameScene.h */,
 				73AC7A4C1AD1A5C900393598 /* GameScene.m */,
+				73174BC11AD28619000ACAB7 /* ImageStructureAnalyser */,
 				73AC7A4E1AD1A5C900393598 /* GameScene.sks */,
-				73174BBE1AD20542000ACAB7 /* Window.h */,
-				73174BBF1AD20542000ACAB7 /* Window.m */,
 				73AC7A501AD1A5C900393598 /* Images.xcassets */,
 				73AC7A521AD1A5C900393598 /* MainMenu.xib */,
 				73AC7A441AD1A5C900393598 /* Supporting Files */,
@@ -285,8 +321,12 @@
 			files = (
 				73AC7A4A1AD1A5C900393598 /* main.m in Sources */,
 				73AC7A4D1AD1A5C900393598 /* GameScene.m in Sources */,
+				73174BC41AD28665000ACAB7 /* ImageStructureAnalyser.m in Sources */,
+				73174BD71AD2CBAE000ACAB7 /* NSImage+ImageProcessing.m in Sources */,
+				73174BD51AD2CBAE000ACAB7 /* KPCScaleToFillNSImageView.m in Sources */,
 				73AC7A481AD1A5C900393598 /* AppDelegate.m in Sources */,
-				73174BC01AD20542000ACAB7 /* Window.m in Sources */,
+				73174BD41AD2CBAE000ACAB7 /* Window.m in Sources */,
+				73174BD61AD2CBAE000ACAB7 /* NSMutableArray+MultidimensionalAdditions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

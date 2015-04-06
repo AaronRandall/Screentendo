@@ -8,6 +8,7 @@
 
 #import "AppDelegate.h"
 #import "GameScene.h"
+#import "ImageStructureAnalyser.h"
 
 @implementation SKScene (Unarchive)
 
@@ -45,6 +46,8 @@
     
     self.skView.showsFPS = YES;
     self.skView.showsNodeCount = YES;
+    
+    
 }
 
 - (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)sender {

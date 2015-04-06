@@ -12,6 +12,7 @@
 
 + (Window*)getWindowAtLayer:(int)layer andIndex:(int)index;
 + (NSArray*)listOfWindows;
++ (NSImage*)croppedImageOfTopLevelWindow;
 
 - (NSString*)name;
 - (NSString*)ownerName;

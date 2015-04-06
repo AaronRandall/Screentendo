@@ -9,13 +9,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "TestGame/AppDelegate.m"
-            timestampString = "450004439.415226"
+            filePath = "TestGame/GameScene.m"
+            timestampString = "450022529.778507"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "47"
-            endingLineNumber = "47"
-            landmarkName = "-applicationDidFinishLaunching:"
+            startingLineNumber = "49"
+            endingLineNumber = "49"
+            landmarkName = "-mouseDown:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

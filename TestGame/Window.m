@@ -111,4 +111,33 @@
     return windows;
 }
 
++ (NSImage*)croppedImageOfTopLevelWindow {
+    Window *graphMagicWindow = [Window getWindowAtLayer:0 andIndex:0];
+    Window *topLevelWindow   = [Window getWindowAtLayer:0 andIndex:1];
+    
+    NSImage *screenimage = [topLevelWindow takeScreenshot];
+  //  [self saveImage:screenimage filename:@"1_screenshot.png"];
+    
+    // Crop the top-level window relative to the graph magic window
+    float xDiff = abs(topLevelWindow.bounds.origin.x - graphMagicWindow.bounds.origin.x);
+    float yDiff = abs(topLevelWindow.bounds.origin.y - graphMagicWindow.bounds.origin.y);
+    CGRect rect = CGRectMake(xDiff, yDiff, graphMagicWindow.bounds.size.width, graphMagicWindow.bounds.size.height);
+    CGImageRef cImage = CGImageCreateWithImageInRect([self nsImageToCGImageRef:screenimage], rect);
+    
+    NSImage *image = [[NSImage alloc] initWithCGImage:cImage size:rect.size];
+  //  [self saveImage:image filename:@"2_cropped_screenshot.png"];
+    
+    return image;
+}
+
++ (CGImageRef)nsImageToCGImageRef:(NSImage*)image;
+{
+    NSData * imageData = [image TIFFRepresentation];
+    CGImageRef imageRef;
+    if(!imageData) return nil;
+    CGImageSourceRef imageSource = CGImageSourceCreateWithData((CFDataRef)imageData, NULL);
+    imageRef = CGImageSourceCreateImageAtIndex(imageSource, 0, NULL);
+    return imageRef;
+}
+
 @end

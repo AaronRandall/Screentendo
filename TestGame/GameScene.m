@@ -7,6 +7,7 @@
 //
 
 #import "GameScene.h"
+#import "ImageStructureAnalyser.h"
 
 @implementation GameScene {
     SKSpriteNode *_sprite;
@@ -41,6 +42,8 @@
 }
 
 -(void)mouseDown:(NSEvent *)theEvent {
+    NSArray *imageArray = [ImageStructureAnalyser topLevelWindowToBinaryArrayWithBlockSize:8];
+    
     self.physicsWorld.gravity = CGVectorMake(0, -10);
     
     CGPoint location = [theEvent locationInNode:self];
@@ -68,17 +71,6 @@
         [_blocks addObject:block];
         [self addChild:block];
     }
-    
-    
-    // 3
-    //_sprite.physicsBody.allowsRotation = NO;
-    // 4
-    //_sprite.physicsBody.restitution = 1.0f;
-    //_sprite.physicsBody.friction = 0.0f;
-    //_sprite.physicsBody.angularDamping = 0.0f;
-    //_sprite.physicsBody.linearDamping = 0.0f;
-    //SKAction *action = [SKAction rotateByAngle:M_PI duration:1];
-    //[_sprite runAction:[SKAction repeatActionForever:action]];
 }
 
 -(void)renderPlayerPosition {
