@@ -13,11 +13,18 @@
 @interface GameScene() <SKPhysicsContactDelegate>
 @end
 
+typedef NS_ENUM(NSInteger, Direction) {
+    Left,
+    Right,
+    Up,
+    Down
+};
+
 @implementation GameScene {
     SKSpriteNode *_sprite;
     NSMutableArray *_blocks;
     BOOL _keyPressed;
-    int _direction;
+    Direction _direction;
     BOOL _isJumping;
 }
 
@@ -36,19 +43,19 @@
     switch([event keyCode]) {
         case 126:
             NSLog(@"Key 126 pressed");
-            _direction = 1;
+            _direction = Up;
             break;
         case 125:
             NSLog(@"Key 125 pressed");
-            _direction = 2;
+            _direction = Down;
             break;
         case 124:
             NSLog(@"Key 124 pressed");
-            _direction = 3;
+            _direction = Right;
             break;
         case 123:
             NSLog(@"Key 123 pressed");
-            _direction = 4;
+            _direction = Left;
             break;
         default:
             break;
@@ -73,7 +80,7 @@
 }
 
 - (void) mouseDown:(NSEvent *)theEvent {
-    int blockSize = 8;
+    int blockSize = 10;
     
     [self clearSpritesFromScene];
     
@@ -117,28 +124,29 @@
                 
                 [_blocks addObject:block];
                 [self addChild:block];
-                
             }
         }
     }
     
     [self makeAppWindowOpaque];
-    
-    // Hardcoded blocks
-  /*  for (int i = 0; i < 5; i++) {
-        SKSpriteNode *block = [SKSpriteNode spriteNodeWithImageNamed:@"block"];
-        block = [SKSpriteNode spriteNodeWithImageNamed:@"block"];
-        block.position = CGPointMake(location.x + (block.size.width * i), location.y);
-        block.scale = 1;
-        block.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:block.size];
-        block.physicsBody.dynamic = NO;
-        block.physicsBody.allowsRotation = NO;
-        block.physicsBody.usesPreciseCollisionDetection = YES;
-        block.physicsBody.affectedByGravity = NO;
-        
-        [_blocks addObject:block];
-        [self addChild:block];
-    }*/
+//    
+//    // Hardcoded blocks
+//    int numBlocks = 20;
+//    for (int i = 0; i < numBlocks; i++) {
+//        SKSpriteNode *block = [SKSpriteNode spriteNodeWithImageNamed:@"block"];
+//        block.size = CGSizeMake(blockSize, blockSize);
+//        block.position = CGPointMake(location.x + ((i*blockSize)-((numBlocks/2)*blockSize)),location.y);
+//        block.scale = 1;
+//        block.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:block.size];
+//        block.physicsBody.dynamic = NO;
+//        block.physicsBody.allowsRotation = NO;
+//        block.physicsBody.usesPreciseCollisionDetection = YES;
+//        block.physicsBody.affectedByGravity = NO;
+//        block.physicsBody.contactTestBitMask = 1;
+//        
+//        [_blocks addObject:block];
+//        [self addChild:block];
+//    }
 }
 
 - (void) renderPlayerPosition {
@@ -147,23 +155,19 @@
         int yDelta = 0;
         
         switch (_direction) {
-            case 1:
-                //NSLog(@"Jump pressed");
+            case Up:
                 if (!_isJumping) {
                     _isJumping = YES;
                     [_sprite.physicsBody applyImpulse:CGVectorMake(0.0f, 1.0f) atPoint:_sprite.position];
                 }
                 break;
-            case 2:
-                //NSLog(@"Down pressed");
+            case Down:
                 yDelta = -2;
                 break;
-            case 3:
-                //NSLog(@"Right pressed");
+            case Right:
                 xDelta = +2;
                 break;
-            case 4:
-                //NSLog(@"Left pressed");
+            case Left:
                 xDelta = -2;
                 break;
             default:
