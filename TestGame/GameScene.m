@@ -8,12 +8,27 @@
 
 #import "GameScene.h"
 #import "ImageStructureAnalyser.h"
+#import "AppDelegate.h"
+
+@interface GameScene() <SKPhysicsContactDelegate>
+@end
 
 @implementation GameScene {
     SKSpriteNode *_sprite;
     NSMutableArray *_blocks;
     BOOL _keyPressed;
     int _direction;
+    BOOL _isJumping;
+}
+
+-(void)didChangeSize:(CGSize)oldSize {
+    NSLog(@"SIZE CHANGED");
+    [self clearSpritesFromScene];
+    [self makeAppWindowTransparent];
+}
+
+- (void)windowDidResize {
+    NSLog(@"Window resized");
 }
 
 -(void)keyDown:(NSEvent *)event {
@@ -21,15 +36,19 @@
     
     switch([event keyCode]) {
         case 126:
+            NSLog(@"Key 126 pressed");
             _direction = 1;
             break;
         case 125:
+            NSLog(@"Key 125 pressed");
             _direction = 2;
             break;
         case 124:
+            NSLog(@"Key 124 pressed");
             _direction = 3;
             break;
         case 123:
+            NSLog(@"Key 123 pressed");
             _direction = 4;
             break;
         default:
@@ -41,12 +60,28 @@
     _keyPressed = NO;
 }
 
+-(void)clearSpritesFromScene {
+    [self removeAllChildren];
+    [_blocks removeAllObjects];
+}
+
+-(void)makeAppWindowTransparent {
+    [(AppDelegate*)[[NSApplication sharedApplication] delegate] makeWindowTransparent];
+}
+
+-(void)makeAppWindowOpaque {
+    [(AppDelegate*)[[NSApplication sharedApplication] delegate] makeWindowOpaque];
+}
+
 -(void)mouseDown:(NSEvent *)theEvent {
     int blockSize = 8;
     
+    [self clearSpritesFromScene];
+    
     NSArray *imageArray = [ImageStructureAnalyser topLevelWindowToBinaryArrayWithBlockSize:blockSize];
     
-    //self.physicsWorld.gravity = CGVectorMake(0, -10);
+    self.physicsWorld.gravity = CGVectorMake(0, -3);
+    self.physicsWorld.contactDelegate = self;
     
     CGPoint location = [theEvent locationInNode:self];
     _sprite = [SKSpriteNode spriteNodeWithImageNamed:@"player"];
@@ -58,6 +93,7 @@
     _sprite.physicsBody.angularVelocity = 0.0f;
     _sprite.physicsBody.angularDamping = 0.0f;
     _sprite.physicsBody.dynamic = YES;
+    _sprite.physicsBody.contactTestBitMask = 0;
     [self addChild:_sprite];
     
     int blocksWide = (int)imageArray.count;
@@ -78,6 +114,7 @@
                 block.physicsBody.allowsRotation = NO;
                 block.physicsBody.usesPreciseCollisionDetection = YES;
                 block.physicsBody.affectedByGravity = NO;
+                block.physicsBody.contactTestBitMask = 1;
                 
                 [_blocks addObject:block];
                 [self addChild:block];
@@ -85,6 +122,8 @@
             }
         }
     }
+    
+    [self makeAppWindowOpaque];
     
     // Hardcoded blocks
   /*  for (int i = 0; i < 5; i++) {
@@ -110,16 +149,23 @@
         
         switch (_direction) {
             case 1:
-                [_sprite.physicsBody applyImpulse:CGVectorMake(0.0f, 2.0f) atPoint:_sprite.position];
+                //NSLog(@"Jump pressed");
+                if (!_isJumping) {
+                    _isJumping = YES;
+                    [_sprite.physicsBody applyImpulse:CGVectorMake(0.0f, 1.0f) atPoint:_sprite.position];
+                }
                 break;
             case 2:
-                yDelta = -5;
+                //NSLog(@"Down pressed");
+                yDelta = -2;
                 break;
             case 3:
-                xDelta = +5;
+                //NSLog(@"Right pressed");
+                xDelta = +2;
                 break;
             case 4:
-                xDelta = -5;
+                //NSLog(@"Left pressed");
+                xDelta = -2;
                 break;
             default:
                 break;
@@ -130,6 +176,11 @@
         
        // _sprite.physicsBody.velocity = CGVectorMake(_sprite.physicsBody.velocity.dx + xDelta,_sprite.physicsBody.velocity.dy + yDelta);
     }
+}
+
+- (void)didBeginContact:(SKPhysicsContact *)contact {
+    //NSLog(@"Did begin contact");
+    _isJumping = NO;
 }
 
 -(void)update:(CFTimeInterval)currentTime {

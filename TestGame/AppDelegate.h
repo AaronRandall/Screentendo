@@ -14,4 +14,7 @@
 @property (assign) IBOutlet NSWindow *window;
 @property (assign) IBOutlet SKView *skView;
 
+- (void)makeWindowTransparent;
+- (void)makeWindowOpaque;
+
 @end
