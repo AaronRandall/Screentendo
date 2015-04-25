@@ -14,18 +14,22 @@
 @end
 
 typedef NS_ENUM(NSInteger, Direction) {
-    Left,
-    Right,
-    Up,
-    Down
+    Left = 123,
+    Right = 124,
+    Up = 126,
+    Down = 125
 };
 
 @implementation GameScene {
     SKSpriteNode *_sprite;
     NSMutableArray *_blocks;
-    BOOL _keyPressed;
     Direction _direction;
     BOOL _isJumping;
+    
+    BOOL _leftPressed;
+    BOOL _rightPressed;
+    BOOL _upPressed;
+    BOOL _downPressed;
 }
 
 - (void) didChangeSize:(CGSize)oldSize {
@@ -38,32 +42,41 @@ typedef NS_ENUM(NSInteger, Direction) {
 }
 
 - (void) keyDown:(NSEvent *)event {
-    _keyPressed = YES;
-    
     switch([event keyCode]) {
-        case 126:
-            NSLog(@"Key 126 pressed");
-            _direction = Up;
+        case Up:
+            _upPressed = YES;
             break;
-        case 125:
-            NSLog(@"Key 125 pressed");
-            _direction = Down;
+        case Down:
+            _downPressed = YES;
             break;
-        case 124:
-            NSLog(@"Key 124 pressed");
-            _direction = Right;
+        case Right:
+            _rightPressed = YES;
             break;
-        case 123:
-            NSLog(@"Key 123 pressed");
-            _direction = Left;
+        case Left:
+            _leftPressed = YES;
             break;
         default:
             break;
     }
 }
 
-- (void) keyUp:(NSEvent *)theEvent {
-    _keyPressed = NO;
+- (void) keyUp:(NSEvent *)event {
+    switch([event keyCode]) {
+        case Up:
+            _upPressed = NO;
+            break;
+        case Down:
+            _downPressed = NO;
+            break;
+        case Right:
+            _rightPressed = NO;
+            break;
+        case Left:
+            _leftPressed = NO;
+            break;
+        default:
+            break;
+    }
 }
 
 - (void) clearSpritesFromScene {
@@ -84,7 +97,7 @@ typedef NS_ENUM(NSInteger, Direction) {
     
     [self clearSpritesFromScene];
     
-    NSArray *imageArray = [ImageStructureAnalyser topLevelWindowToBinaryArrayWithBlockSize:blockSize];
+//    NSArray *imageArray = [ImageStructureAnalyser topLevelWindowToBinaryArrayWithBlockSize:blockSize];
     
     self.physicsWorld.gravity = CGVectorMake(0, -3);
     self.physicsWorld.contactDelegate = self;
@@ -102,83 +115,76 @@ typedef NS_ENUM(NSInteger, Direction) {
     _sprite.physicsBody.contactTestBitMask = 0;
     [self addChild:_sprite];
     
-    int blocksWide = (int)imageArray.count;
-    int blocksHigh = (int)[(NSArray*)[imageArray objectAtIndex:0] count];
-    
-    // Draw the blocks to the screen as images
-    for (int x = 0; x < blocksWide; x++) {
-        for (int y = 0; y < blocksHigh; y++) {
-            NSNumber *currentColor = imageArray[x][y];
-            
-            if ([currentColor isEqualToNumber:[NSNumber numberWithInt:1]]) {
-                SKSpriteNode *block = [SKSpriteNode spriteNodeWithImageNamed:@"block"];
-                block.size = CGSizeMake(blockSize, blockSize);
-                block.position = CGPointMake(x*blockSize,(blocksHigh * blockSize) - y*blockSize);
-                block.scale = 1;
-                block.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:block.size];
-                block.physicsBody.dynamic = NO;
-                block.physicsBody.allowsRotation = NO;
-                block.physicsBody.usesPreciseCollisionDetection = YES;
-                block.physicsBody.affectedByGravity = NO;
-                block.physicsBody.contactTestBitMask = 1;
-                
-                [_blocks addObject:block];
-                [self addChild:block];
-            }
-        }
-    }
+//    int blocksWide = (int)imageArray.count;
+//    int blocksHigh = (int)[(NSArray*)[imageArray objectAtIndex:0] count];
+//    
+//    // Draw the blocks to the screen as images
+//    for (int x = 0; x < blocksWide; x++) {
+//        for (int y = 0; y < blocksHigh; y++) {
+//            NSNumber *currentColor = imageArray[x][y];
+//            
+//            if ([currentColor isEqualToNumber:[NSNumber numberWithInt:1]]) {
+//                SKSpriteNode *block = [SKSpriteNode spriteNodeWithImageNamed:@"block"];
+//                block.size = CGSizeMake(blockSize, blockSize);
+//                block.position = CGPointMake(x*blockSize,(blocksHigh * blockSize) - y*blockSize);
+//                block.scale = 1;
+//                block.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:block.size];
+//                block.physicsBody.dynamic = NO;
+//                block.physicsBody.allowsRotation = NO;
+//                block.physicsBody.usesPreciseCollisionDetection = YES;
+//                block.physicsBody.affectedByGravity = NO;
+//                block.physicsBody.contactTestBitMask = 1;
+//                
+//                [_blocks addObject:block];
+//                [self addChild:block];
+//            }
+//        }
+//    }
     
     [self makeAppWindowOpaque];
-//    
-//    // Hardcoded blocks
-//    int numBlocks = 20;
-//    for (int i = 0; i < numBlocks; i++) {
-//        SKSpriteNode *block = [SKSpriteNode spriteNodeWithImageNamed:@"block"];
-//        block.size = CGSizeMake(blockSize, blockSize);
-//        block.position = CGPointMake(location.x + ((i*blockSize)-((numBlocks/2)*blockSize)),location.y);
-//        block.scale = 1;
-//        block.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:block.size];
-//        block.physicsBody.dynamic = NO;
-//        block.physicsBody.allowsRotation = NO;
-//        block.physicsBody.usesPreciseCollisionDetection = YES;
-//        block.physicsBody.affectedByGravity = NO;
-//        block.physicsBody.contactTestBitMask = 1;
-//        
-//        [_blocks addObject:block];
-//        [self addChild:block];
-//    }
+    
+    // Hardcoded blocks
+    int numBlocks = 20;
+    for (int i = 0; i < numBlocks; i++) {
+        SKSpriteNode *block = [SKSpriteNode spriteNodeWithImageNamed:@"block"];
+        block.size = CGSizeMake(blockSize, blockSize);
+        block.position = CGPointMake(location.x + ((i*blockSize)-((numBlocks/2)*blockSize)),location.y);
+        block.scale = 1;
+        block.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:block.size];
+        block.physicsBody.dynamic = NO;
+        block.physicsBody.allowsRotation = NO;
+        block.physicsBody.usesPreciseCollisionDetection = YES;
+        block.physicsBody.affectedByGravity = NO;
+        block.physicsBody.contactTestBitMask = 1;
+        
+        [_blocks addObject:block];
+        [self addChild:block];
+    }
 }
 
 - (void) renderPlayerPosition {
-    if (_keyPressed) {
-        int xDelta = 0;
-        int yDelta = 0;
-        
-        switch (_direction) {
-            case Up:
-                if (!_isJumping) {
-                    _isJumping = YES;
-                    [_sprite.physicsBody applyImpulse:CGVectorMake(0.0f, 1.0f) atPoint:_sprite.position];
-                }
-                break;
-            case Down:
-                yDelta = -2;
-                break;
-            case Right:
-                xDelta = +2;
-                break;
-            case Left:
-                xDelta = -2;
-                break;
-            default:
-                break;
+    int xDelta = 0;
+    int yDelta = 0;
+    
+    if (_upPressed) {
+        if (!_isJumping) {
+            _isJumping = YES;
+            [_sprite.physicsBody applyImpulse:CGVectorMake(0.0f, 1.5f) atPoint:_sprite.position];
         }
-        
-        CGPoint desiredPosition = CGPointMake(_sprite.position.x + xDelta, _sprite.position.y + yDelta);
-        _sprite.position = desiredPosition;
-        
-       // _sprite.physicsBody.velocity = CGVectorMake(_sprite.physicsBody.velocity.dx + xDelta,_sprite.physicsBody.velocity.dy + yDelta);
+    } else if (_downPressed) {
+        yDelta = -2;
     }
+    
+    if (_rightPressed) {
+        xDelta = +2;
+    } else if (_leftPressed) {
+        xDelta = -2;
+    }
+    
+    CGPoint desiredPosition = CGPointMake(_sprite.position.x + xDelta, _sprite.position.y + yDelta);
+    _sprite.position = desiredPosition;
+    
+   // _sprite.physicsBody.velocity = CGVectorMake(_sprite.physicsBody.velocity.dx + xDelta,_sprite.physicsBody.velocity.dy + yDelta);
 }
 
 - (void)didBeginContact:(SKPhysicsContact *)contact {
