@@ -10,4 +10,6 @@
 
 @interface GameScene : SKScene
 
+- (void)clearSpritesFromScene;
+
 @end

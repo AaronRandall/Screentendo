@@ -29,21 +29,27 @@
 
 @end
 
-@implementation AppDelegate
+@implementation AppDelegate {
+    GameScene *_scene;
+}
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
-    GameScene *scene = [GameScene unarchiveFromFile:@"GameScene"];
+    _scene = [GameScene unarchiveFromFile:@"GameScene"];
 
+    _scene.backgroundColor = self.window.backgroundColor;
+    
     // Set the scale mode to scale to fit the window
-    scene.scaleMode = SKSceneScaleModeResizeFill;
-    [self.skView presentScene:scene];
+    _scene.scaleMode = SKSceneScaleModeResizeFill;
+    [self.skView presentScene:_scene];
 
     // Sprite Kit applies additional optimizations to improve rendering performance
     self.skView.ignoresSiblingOrder = YES;
-    self.skView.showsFPS = YES;
-    self.skView.showsNodeCount = YES;
+    self.skView.showsFPS = NO;
+    self.skView.showsNodeCount = NO;
     
     [self makeWindowTransparent];
+    
+    self.window.delegate = self;
 }
 
 - (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)sender {
@@ -58,6 +64,12 @@
 - (void)makeWindowOpaque {
     self.window.opaque = YES;
     self.window.alphaValue = 1;
+}
+
+- (void)windowWillMove:(NSNotification *)notification {
+    NSLog(@"Window moving");
+    [self makeWindowTransparent];
+    [_scene clearSpritesFromScene];
 }
 
 @end

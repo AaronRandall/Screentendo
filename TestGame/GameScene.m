@@ -21,8 +21,7 @@
     BOOL _isJumping;
 }
 
--(void)didChangeSize:(CGSize)oldSize {
-    NSLog(@"SIZE CHANGED");
+- (void) didChangeSize:(CGSize)oldSize {
     [self clearSpritesFromScene];
     [self makeAppWindowTransparent];
 }
@@ -31,7 +30,7 @@
     NSLog(@"Window resized");
 }
 
--(void)keyDown:(NSEvent *)event {
+- (void) keyDown:(NSEvent *)event {
     _keyPressed = YES;
     
     switch([event keyCode]) {
@@ -56,24 +55,24 @@
     }
 }
 
--(void)keyUp:(NSEvent *)theEvent {
+- (void) keyUp:(NSEvent *)theEvent {
     _keyPressed = NO;
 }
 
--(void)clearSpritesFromScene {
+- (void) clearSpritesFromScene {
     [self removeAllChildren];
     [_blocks removeAllObjects];
 }
 
--(void)makeAppWindowTransparent {
+- (void) makeAppWindowTransparent {
     [(AppDelegate*)[[NSApplication sharedApplication] delegate] makeWindowTransparent];
 }
 
--(void)makeAppWindowOpaque {
+- (void) makeAppWindowOpaque {
     [(AppDelegate*)[[NSApplication sharedApplication] delegate] makeWindowOpaque];
 }
 
--(void)mouseDown:(NSEvent *)theEvent {
+- (void) mouseDown:(NSEvent *)theEvent {
     int blockSize = 8;
     
     [self clearSpritesFromScene];
@@ -142,7 +141,7 @@
     }*/
 }
 
--(void)renderPlayerPosition {
+- (void) renderPlayerPosition {
     if (_keyPressed) {
         int xDelta = 0;
         int yDelta = 0;
@@ -183,7 +182,7 @@
     _isJumping = NO;
 }
 
--(void)update:(CFTimeInterval)currentTime {
+- (void) update:(CFTimeInterval)currentTime {
     /* Called before each frame is rendered */
     [self renderPlayerPosition];
 }
