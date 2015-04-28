@@ -14,17 +14,17 @@
 @end
 
 typedef NS_ENUM(NSInteger, Direction) {
-    Left = 123,
+    Left  = 123,
     Right = 124,
-    Up = 126,
-    Down = 125
+    Up    = 126,
+    Down  = 125
 };
 
 @implementation GameScene {
     SKSpriteNode *_sprite;
     NSMutableArray *_blocks;
-    Direction _direction;
     BOOL _isJumping;
+    BOOL _isFacingLeft;
     
     BOOL _leftPressed;
     BOOL _rightPressed;
@@ -107,7 +107,7 @@ typedef NS_ENUM(NSInteger, Direction) {
     self.physicsWorld.contactDelegate = self;
     
     CGPoint location = [theEvent locationInNode:self];
-    _sprite = [SKSpriteNode spriteNodeWithImageNamed:@"player"];
+    _sprite = [SKSpriteNode spriteNodeWithImageNamed:@"player-standing-right"];
     _sprite.size = CGSizeMake(blockSize, blockSize * 2);
     _sprite.position = CGPointMake(location.x, location.y + 230);
     _sprite.scale = 1;
@@ -188,21 +188,29 @@ typedef NS_ENUM(NSInteger, Direction) {
     int xDelta = 0;
     int yDelta = 0;
     
-    int deltaChange = 1;
+    int deltaChange = 1.7;
     
     if (_upPressed) {
         if (!_isJumping) {
             _isJumping = YES;
             [_sprite.physicsBody applyImpulse:CGVectorMake(0.0f, 1.5f) atPoint:_sprite.position];
-            [_sprite setTexture:[SKTexture textureWithImageNamed:@"player-jumping"]];
+            if (_isFacingLeft) {
+                [self changeSpriteTexture:@"player-jumping-left"];
+            } else {
+                [self changeSpriteTexture:@"player-jumping-right"];
+            }
         }
     } else if (_downPressed) {
         yDelta = -deltaChange;
     }
     
     if (_rightPressed) {
+        _isFacingLeft = NO;
+        [self changeSpriteTexture:@"player-standing-right"];
         xDelta = +deltaChange;
     } else if (_leftPressed) {
+        _isFacingLeft = YES;
+        [self changeSpriteTexture:@"player-standing-left"];
         xDelta = -deltaChange;
     }
     
@@ -212,10 +220,17 @@ typedef NS_ENUM(NSInteger, Direction) {
     //_sprite.physicsBody.velocity = CGVectorMake(_sprite.physicsBody.velocity.dx + xDelta,_sprite.physicsBody.velocity.dy + yDelta);
 }
 
+- (void)changeSpriteTexture:(NSString*)textureName {
+    if (![_sprite.texture.description isEqualToString:textureName]) {
+        [_sprite setTexture:[SKTexture textureWithImageNamed:textureName]];
+    }
+}
+
 - (void)didBeginContact:(SKPhysicsContact *)contact {
     //NSLog(@"Did begin contact");
     _isJumping = NO;
-    [_sprite setTexture:[SKTexture textureWithImageNamed:@"player"]];
+    
+    [self changeSpriteTexture:@"player-standing-right"];
     
     if (contact.bodyA.node.physicsBody.contactTestBitMask == 0) {
         // BodyA is player
@@ -228,8 +243,6 @@ typedef NS_ENUM(NSInteger, Direction) {
             [contact.bodyA.node removeFromParent];
         }
     }
-    
-    
 }
 
 - (void) update:(CFTimeInterval)currentTime {
