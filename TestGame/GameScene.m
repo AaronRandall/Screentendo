@@ -133,8 +133,8 @@ typedef NS_ENUM(NSInteger, Direction) {
                     block.size = CGSizeMake(blockSize, blockSize);
                     block.position = CGPointMake(x*blockSize,(blocksHigh * blockSize) - y*blockSize);
                     block.scale = 1;
-                    //block.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:CGSizeMake(block.size.width, block.size.height)];
-                    block.physicsBody = [SKPhysicsBody bodyWithEdgeFromPoint:CGPointMake(0,0) toPoint:CGPointMake(0,0)];
+                    block.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:CGSizeMake(block.size.width, block.size.height)];
+                    //block.physicsBody = [SKPhysicsBody bodyWithEdgeFromPoint:CGPointMake(-2,-2) toPoint:CGPointMake(2,2)];
                     //block.physicsBody = [SKPhysicsBody bodyWithCircleOfRadius:block.size.height/2];
                     //block.physicsBody = [SKPhysicsBody bodyWithTexture:[SKTexture textureWithImageNamed:@"block"] size:block.size];
                     block.physicsBody.dynamic = NO;
@@ -188,7 +188,7 @@ typedef NS_ENUM(NSInteger, Direction) {
     int xDelta = 0;
     int yDelta = 0;
     
-    int deltaChange = 4;
+    int deltaChange = 1;
     
     if (_upPressed) {
         if (!_isJumping) {
@@ -206,16 +206,48 @@ typedef NS_ENUM(NSInteger, Direction) {
         xDelta = -deltaChange;
     }
     
-    //CGPoint desiredPosition = CGPointMake(_sprite.position.x + xDelta, _sprite.position.y + yDelta);
-    //_sprite.position = desiredPosition;
+    CGPoint desiredPosition = CGPointMake(_sprite.position.x + xDelta, _sprite.position.y + yDelta);
+    _sprite.position = desiredPosition;
     
-    _sprite.physicsBody.velocity = CGVectorMake(_sprite.physicsBody.velocity.dx + xDelta,_sprite.physicsBody.velocity.dy + yDelta);
+    //_sprite.physicsBody.velocity = CGVectorMake(_sprite.physicsBody.velocity.dx + xDelta,_sprite.physicsBody.velocity.dy + yDelta);
 }
 
 - (void)didBeginContact:(SKPhysicsContact *)contact {
     //NSLog(@"Did begin contact");
     _isJumping = NO;
     [_sprite setTexture:[SKTexture textureWithImageNamed:@"player"]];
+    
+    if (contact.bodyA.node.physicsBody.contactTestBitMask == 0) {
+        // BodyA is player
+        if ((contact.bodyA.node.position.y < contact.contactPoint.y) && (contact.bodyB.node.position.y > contact.contactPoint.y)) {
+            NSLog(@"Hit underneath something?");
+            // Only remove blocks, not the player!
+            NSLog(@"BodyA:%u", contact.bodyA.node.physicsBody.contactTestBitMask);
+            NSLog(@"BodyA.y:%f", contact.bodyA.node.position.y);
+            NSLog(@"BodyB:%u", contact.bodyB.node.physicsBody.contactTestBitMask);
+            NSLog(@"BodyB.y:%f", contact.bodyB.node.position.y);
+            NSLog(@"contact.y:%f", contact.contactPoint.y);
+            if (contact.bodyB.node.physicsBody.contactTestBitMask == 1) {
+                [contact.bodyB.node removeFromParent];
+            }
+        }
+    } else {
+        // BodyB is player
+        if ((contact.bodyB.node.position.y < contact.contactPoint.y) && (contact.bodyA.node.position.y > contact.contactPoint.y)) {
+            NSLog(@"Hit underneath something?");
+            // Only remove blocks, not the player!
+            NSLog(@"BodyA:%u", contact.bodyA.node.physicsBody.contactTestBitMask);
+            NSLog(@"BodyA.y:%f", contact.bodyA.node.position.y);
+            NSLog(@"BodyB:%u", contact.bodyB.node.physicsBody.contactTestBitMask);
+            NSLog(@"BodyB.y:%f", contact.bodyB.node.position.y);
+            NSLog(@"contact.y:%f", contact.contactPoint.y);
+            if (contact.bodyA.node.physicsBody.contactTestBitMask == 1) {
+                [contact.bodyA.node removeFromParent];
+            }
+        }
+    }
+    
+    
 }
 
 - (void) update:(CFTimeInterval)currentTime {
