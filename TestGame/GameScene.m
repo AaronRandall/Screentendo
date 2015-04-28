@@ -220,30 +220,12 @@ typedef NS_ENUM(NSInteger, Direction) {
     if (contact.bodyA.node.physicsBody.contactTestBitMask == 0) {
         // BodyA is player
         if ((contact.bodyA.node.position.y < contact.contactPoint.y) && (contact.bodyB.node.position.y > contact.contactPoint.y)) {
-            NSLog(@"Hit underneath something?");
-            // Only remove blocks, not the player!
-            NSLog(@"BodyA:%u", contact.bodyA.node.physicsBody.contactTestBitMask);
-            NSLog(@"BodyA.y:%f", contact.bodyA.node.position.y);
-            NSLog(@"BodyB:%u", contact.bodyB.node.physicsBody.contactTestBitMask);
-            NSLog(@"BodyB.y:%f", contact.bodyB.node.position.y);
-            NSLog(@"contact.y:%f", contact.contactPoint.y);
-            if (contact.bodyB.node.physicsBody.contactTestBitMask == 1) {
-                [contact.bodyB.node removeFromParent];
-            }
+            [contact.bodyB.node removeFromParent];
         }
     } else {
         // BodyB is player
         if ((contact.bodyB.node.position.y < contact.contactPoint.y) && (contact.bodyA.node.position.y > contact.contactPoint.y)) {
-            NSLog(@"Hit underneath something?");
-            // Only remove blocks, not the player!
-            NSLog(@"BodyA:%u", contact.bodyA.node.physicsBody.contactTestBitMask);
-            NSLog(@"BodyA.y:%f", contact.bodyA.node.position.y);
-            NSLog(@"BodyB:%u", contact.bodyB.node.physicsBody.contactTestBitMask);
-            NSLog(@"BodyB.y:%f", contact.bodyB.node.position.y);
-            NSLog(@"contact.y:%f", contact.contactPoint.y);
-            if (contact.bodyA.node.physicsBody.contactTestBitMask == 1) {
-                [contact.bodyA.node removeFromParent];
-            }
+            [contact.bodyA.node removeFromParent];
         }
     }
     
