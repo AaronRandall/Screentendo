@@ -33,10 +33,10 @@ typedef NS_ENUM(NSInteger, Direction) {
     
     int _frameCount;
     int _animationTicker;
-    
-    // Debug
-    BOOL _hardcodeBlocks;
 }
+
+// Debug
+const bool _hardcodeBlocks = NO;
 
 - (void) didChangeSize:(CGSize)oldSize {
     [self clearSpritesFromScene];
@@ -154,7 +154,6 @@ typedef NS_ENUM(NSInteger, Direction) {
     }
     
     [self makeAppWindowOpaque];
-    
     if (_hardcodeBlocks) {
         // Hardcoded blocks
         int numBlocks = 20;
@@ -170,6 +169,33 @@ typedef NS_ENUM(NSInteger, Direction) {
             block.physicsBody.usesPreciseCollisionDetection = YES;
             block.physicsBody.affectedByGravity = NO;
             block.physicsBody.contactTestBitMask = 1;
+            
+            [_blocks addObject:block];
+            [self addChild:block];
+        }
+        
+        for (int i = 0; i < numBlocks/2; i++) {
+            SKSpriteNode *block = [SKSpriteNode spriteNodeWithImageNamed:@"block"];
+            block.size = CGSizeMake(blockSize, blockSize);
+            block.position = CGPointMake(location.x + ((i*blockSize)-((numBlocks/2)*blockSize)),location.y + (blockSize*4));
+            block.scale = 1;
+            
+            block.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:block.size];
+            block.physicsBody.dynamic = NO;
+            block.physicsBody.allowsRotation = NO;
+            block.physicsBody.usesPreciseCollisionDetection = YES;
+            block.physicsBody.affectedByGravity = NO;
+            block.physicsBody.contactTestBitMask = 1;
+            
+            /*
+            SKTexture *walkLeft1 = [SKTexture textureWithImageNamed:@"player-jumping-left"];
+            SKTexture *walkLeft2 = [SKTexture textureWithImageNamed:@"player-running-1-left"];
+            SKAction *walkLeft = [SKAction animateWithTextures:@[walkLeft1, walkLeft2] timePerFrame:0.3];
+            
+            SKAction *walkLeftAction = [SKAction repeatActionForever:walkLeft];
+            [block runAction:walkLeftAction withKey:@"walkLeft"];
+            block.speed = 0;
+            */
             
             [_blocks addObject:block];
             [self addChild:block];
@@ -243,8 +269,13 @@ typedef NS_ENUM(NSInteger, Direction) {
     }
     
     if ((playerBody.node.position.y < contact.contactPoint.y) && (blockBody.node.position.y > contact.contactPoint.y)) {
-        [playerBody applyImpulse:CGVectorMake(0.0f, -0.8f) atPoint:playerBody.node.position];
-        [blockBody.node removeFromParent];
+        [playerBody applyImpulse:CGVectorMake(0.0f, -0.4f) atPoint:playerBody.node.position];
+        
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+           [blockBody.node removeFromParent];
+        });
+
+        //blockBody.node.speed = 1;
     }
 }
 
