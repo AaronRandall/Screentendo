@@ -30,6 +30,9 @@ typedef NS_ENUM(NSInteger, Direction) {
     BOOL _rightPressed;
     BOOL _upPressed;
     BOOL _downPressed;
+    
+    int _frameCount;
+    int _animationTicker;
 }
 
 - (void) didChangeSize:(CGSize)oldSize {
@@ -117,6 +120,7 @@ typedef NS_ENUM(NSInteger, Direction) {
     _sprite.physicsBody.angularDamping = 0.0f;
     _sprite.physicsBody.dynamic = YES;
     _sprite.physicsBody.contactTestBitMask = 0;
+    
     [self addChild:_sprite];
     
     if (!hardcodeBlocks) {
@@ -165,13 +169,13 @@ typedef NS_ENUM(NSInteger, Direction) {
             
 //            block.physicsBody = [SKPhysicsBody bodyWithEdgeChainFromPath:CGPathCreateWithRect([block calculateAccumulatedFrame], nil)];
             
-            block.physicsBody = [SKPhysicsBody bodyWithEdgeFromPoint:CGPointMake(0,0) toPoint:CGPointMake(0,0)];
+            //block.physicsBody = [SKPhysicsBody bodyWithEdgeFromPoint:CGPointMake(0,0) toPoint:CGPointMake(0,0)];
             //block.physicsBody = [SKPhysicsBody bodyWithPolygonFromPath:CGPathCreateWithRoundedRect(CGRectMake(0, 0, 5, 5), 2, 2, nil)];
             
 //            block.physicsBody = [SKPhysicsBody bodyWithEdgeFromPoint:CGPointMake(block.position.x, block.position.y) toPoint:CGPointMake(block.position.x + block.size.width, block.position.y)];
             
             
-            //block.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:block.size];
+            block.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:block.size];
             block.physicsBody.dynamic = NO;
             block.physicsBody.allowsRotation = NO;
             block.physicsBody.usesPreciseCollisionDetection = YES;
@@ -206,11 +210,15 @@ typedef NS_ENUM(NSInteger, Direction) {
     
     if (_rightPressed) {
         _isFacingLeft = NO;
-        [self changeSpriteTexture:@"player-running-1-right"];
+        if (!_isJumping) {
+            [self changeSpriteTexture:[NSString stringWithFormat:@"player-running-%i-right",_animationTicker]];
+        }
         xDelta = +deltaChange;
     } else if (_leftPressed) {
         _isFacingLeft = YES;
-        [self changeSpriteTexture:@"player-running-1-left"];
+        if (!_isJumping) {
+            [self changeSpriteTexture:[NSString stringWithFormat:@"player-running-%i-left",_animationTicker]];
+        }
         xDelta = -deltaChange;
     }
     
@@ -235,7 +243,6 @@ typedef NS_ENUM(NSInteger, Direction) {
 }
 
 - (void)didBeginContact:(SKPhysicsContact *)contact {
-    //NSLog(@"Did begin contact");
     _isJumping = NO;
     
     if (contact.bodyA.node.physicsBody.contactTestBitMask == 0) {
@@ -252,7 +259,20 @@ typedef NS_ENUM(NSInteger, Direction) {
 }
 
 - (void) update:(CFTimeInterval)currentTime {
-    /* Called before each frame is rendered */
+    _frameCount++;
+    
+    if (_frameCount == INT_MAX) {
+        _frameCount = 0;
+    }
+    
+    if ((_frameCount % 4) == 0) {
+        _animationTicker++;
+        if (_animationTicker > 3) {
+            _animationTicker = 1;
+        }
+        NSLog(@"%i", _animationTicker);
+    }
+    
     [self renderPlayerPosition];
 }
 
