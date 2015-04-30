@@ -206,12 +206,20 @@ typedef NS_ENUM(NSInteger, Direction) {
     
     if (_rightPressed) {
         _isFacingLeft = NO;
-        [self changeSpriteTexture:@"player-standing-right"];
+        [self changeSpriteTexture:@"player-running-1-right"];
         xDelta = +deltaChange;
     } else if (_leftPressed) {
         _isFacingLeft = YES;
-        [self changeSpriteTexture:@"player-standing-left"];
+        [self changeSpriteTexture:@"player-running-1-left"];
         xDelta = -deltaChange;
+    }
+    
+    if (!_upPressed && !_downPressed && !_rightPressed && !_leftPressed) {
+        if (_isFacingLeft) {
+            [self changeSpriteTexture:@"player-standing-left"];
+        } else {
+            [self changeSpriteTexture:@"player-standing-right"];
+        }
     }
     
     CGPoint desiredPosition = CGPointMake(_sprite.position.x + xDelta, _sprite.position.y + yDelta);
@@ -229,8 +237,6 @@ typedef NS_ENUM(NSInteger, Direction) {
 - (void)didBeginContact:(SKPhysicsContact *)contact {
     //NSLog(@"Did begin contact");
     _isJumping = NO;
-    
-    [self changeSpriteTexture:@"player-standing-right"];
     
     if (contact.bodyA.node.physicsBody.contactTestBitMask == 0) {
         // BodyA is player

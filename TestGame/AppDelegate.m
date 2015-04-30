@@ -58,7 +58,7 @@
 
 - (void)makeWindowTransparent {
     self.window.opaque = NO;
-    self.window.alphaValue = 0.3;
+    self.window.alphaValue = 0.4;
 }
 
 - (void)makeWindowOpaque {
