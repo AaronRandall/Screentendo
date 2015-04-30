@@ -35,8 +35,8 @@ typedef NS_ENUM(NSInteger, Direction) {
     int _animationTicker;
 }
 
-// Debug
-const bool _hardcodeBlocks = NO;
+const bool hardcodeBlocks = NO;
+const int blockSize = 10;
 
 - (void) didChangeSize:(CGSize)oldSize {
     [self clearSpritesFromScene];
@@ -99,12 +99,10 @@ const bool _hardcodeBlocks = NO;
 }
 
 - (void) mouseDown:(NSEvent *)theEvent {
-    int blockSize = 10;
-    
     [self clearSpritesFromScene];
 
     NSArray *imageArray = nil;
-    if (!_hardcodeBlocks) {
+    if (!hardcodeBlocks) {
         imageArray = [ImageStructureAnalyser topLevelWindowToBinaryArrayWithBlockSize:blockSize];
     }
     
@@ -125,7 +123,7 @@ const bool _hardcodeBlocks = NO;
     
     [self addChild:_sprite];
     
-    if (!_hardcodeBlocks) {
+    if (!hardcodeBlocks) {
         int blocksWide = (int)imageArray.count;
         int blocksHigh = (int)[(NSArray*)[imageArray objectAtIndex:0] count];
         
@@ -154,7 +152,7 @@ const bool _hardcodeBlocks = NO;
     }
     
     [self makeAppWindowOpaque];
-    if (_hardcodeBlocks) {
+    if (hardcodeBlocks) {
         // Hardcoded blocks
         int numBlocks = 20;
         for (int i = 0; i < numBlocks; i++) {
