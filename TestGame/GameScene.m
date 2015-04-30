@@ -33,6 +33,9 @@ typedef NS_ENUM(NSInteger, Direction) {
     
     int _frameCount;
     int _animationTicker;
+    
+    // Debug
+    BOOL _hardcodeBlocks;
 }
 
 - (void) didChangeSize:(CGSize)oldSize {
@@ -97,12 +100,11 @@ typedef NS_ENUM(NSInteger, Direction) {
 
 - (void) mouseDown:(NSEvent *)theEvent {
     int blockSize = 10;
-    bool hardcodeBlocks = NO;
     
     [self clearSpritesFromScene];
 
     NSArray *imageArray = nil;
-    if (!hardcodeBlocks) {
+    if (!_hardcodeBlocks) {
         imageArray = [ImageStructureAnalyser topLevelWindowToBinaryArrayWithBlockSize:blockSize];
     }
     
@@ -123,7 +125,7 @@ typedef NS_ENUM(NSInteger, Direction) {
     
     [self addChild:_sprite];
     
-    if (!hardcodeBlocks) {
+    if (!_hardcodeBlocks) {
         int blocksWide = (int)imageArray.count;
         int blocksHigh = (int)[(NSArray*)[imageArray objectAtIndex:0] count];
         
@@ -138,9 +140,6 @@ typedef NS_ENUM(NSInteger, Direction) {
                     block.position = CGPointMake(x*blockSize,(blocksHigh * blockSize) - y*blockSize);
                     block.scale = 1;
                     block.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:CGSizeMake(block.size.width, block.size.height)];
-                    //block.physicsBody = [SKPhysicsBody bodyWithEdgeFromPoint:CGPointMake(-2,-2) toPoint:CGPointMake(2,2)];
-                    //block.physicsBody = [SKPhysicsBody bodyWithCircleOfRadius:block.size.height/2];
-                    //block.physicsBody = [SKPhysicsBody bodyWithTexture:[SKTexture textureWithImageNamed:@"block"] size:block.size];
                     block.physicsBody.dynamic = NO;
                     block.physicsBody.allowsRotation = NO;
                     block.physicsBody.usesPreciseCollisionDetection = YES;
@@ -156,7 +155,7 @@ typedef NS_ENUM(NSInteger, Direction) {
     
     [self makeAppWindowOpaque];
     
-    if (hardcodeBlocks) {
+    if (_hardcodeBlocks) {
         // Hardcoded blocks
         int numBlocks = 20;
         for (int i = 0; i < numBlocks; i++) {
@@ -164,16 +163,6 @@ typedef NS_ENUM(NSInteger, Direction) {
             block.size = CGSizeMake(blockSize, blockSize);
             block.position = CGPointMake(location.x + ((i*blockSize)-((numBlocks/2)*blockSize)),location.y);
             block.scale = 1;
-            
-            //block.physicsBody = [SKPhysicsBody bodyWithPolygonFromPath:CGPathCreateWithRoundedRect(CGRectMake(block.position.x, block.position.y - 50, block.size.width, block.size.height), 1, 0, nil)];
-            
-//            block.physicsBody = [SKPhysicsBody bodyWithEdgeChainFromPath:CGPathCreateWithRect([block calculateAccumulatedFrame], nil)];
-            
-            //block.physicsBody = [SKPhysicsBody bodyWithEdgeFromPoint:CGPointMake(0,0) toPoint:CGPointMake(0,0)];
-            //block.physicsBody = [SKPhysicsBody bodyWithPolygonFromPath:CGPathCreateWithRoundedRect(CGRectMake(0, 0, 5, 5), 2, 2, nil)];
-            
-//            block.physicsBody = [SKPhysicsBody bodyWithEdgeFromPoint:CGPointMake(block.position.x, block.position.y) toPoint:CGPointMake(block.position.x + block.size.width, block.position.y)];
-            
             
             block.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:block.size];
             block.physicsBody.dynamic = NO;
@@ -245,16 +234,17 @@ typedef NS_ENUM(NSInteger, Direction) {
 - (void)didBeginContact:(SKPhysicsContact *)contact {
     _isJumping = NO;
     
-    if (contact.bodyA.node.physicsBody.contactTestBitMask == 0) {
-        // BodyA is player
-        if ((contact.bodyA.node.position.y < contact.contactPoint.y) && (contact.bodyB.node.position.y > contact.contactPoint.y)) {
-            [contact.bodyB.node removeFromParent];
-        }
-    } else {
-        // BodyB is player
-        if ((contact.bodyB.node.position.y < contact.contactPoint.y) && (contact.bodyA.node.position.y > contact.contactPoint.y)) {
-            [contact.bodyA.node removeFromParent];
-        }
+    SKPhysicsBody *playerBody = contact.bodyA;
+    SKPhysicsBody *blockBody  = contact.bodyB;
+    
+    if (contact.bodyB.node.physicsBody.contactTestBitMask == 0) {
+        playerBody = contact.bodyB;
+        blockBody = contact.bodyB;
+    }
+    
+    if ((playerBody.node.position.y < contact.contactPoint.y) && (blockBody.node.position.y > contact.contactPoint.y)) {
+        [playerBody applyImpulse:CGVectorMake(0.0f, -0.8f) atPoint:playerBody.node.position];
+        [blockBody.node removeFromParent];
     }
 }
 
@@ -270,7 +260,6 @@ typedef NS_ENUM(NSInteger, Direction) {
         if (_animationTicker > 3) {
             _animationTicker = 1;
         }
-        NSLog(@"%i", _animationTicker);
     }
     
     [self renderPlayerPosition];
