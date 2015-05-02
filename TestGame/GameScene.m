@@ -38,6 +38,11 @@ typedef NS_ENUM(NSInteger, Direction) {
 const bool hardcodeBlocks = YES;
 const int blockSize = 12;
 
+const uint32_t playerCategory = 0x1 << 0;
+const uint32_t blockCategory = 0x1 << 1;
+const uint32_t blockDebrisCategory = 0x1 << 2;
+const uint32_t noCategory = 0x1 << 3;
+
 - (void) didChangeSize:(CGSize)oldSize {
     [self clearSpritesFromScene];
     [self makeAppWindowTransparent];
@@ -119,7 +124,9 @@ const int blockSize = 12;
     _sprite.physicsBody.angularVelocity = 0.0f;
     _sprite.physicsBody.angularDamping = 0.0f;
     _sprite.physicsBody.dynamic = YES;
-    _sprite.physicsBody.contactTestBitMask = 0;
+    _sprite.physicsBody.categoryBitMask = playerCategory;
+    _sprite.physicsBody.contactTestBitMask = blockCategory;
+    _sprite.physicsBody.collisionBitMask = blockCategory;
     
     [self addChild:_sprite];
     
@@ -166,7 +173,9 @@ const int blockSize = 12;
             block.physicsBody.allowsRotation = NO;
             block.physicsBody.usesPreciseCollisionDetection = YES;
             block.physicsBody.affectedByGravity = NO;
-            block.physicsBody.contactTestBitMask = 1;
+            block.physicsBody.categoryBitMask = blockCategory;
+            block.physicsBody.contactTestBitMask = playerCategory;
+            block.physicsBody.collisionBitMask = playerCategory;
             
             [_blocks addObject:block];
             [self addChild:block];
@@ -183,7 +192,9 @@ const int blockSize = 12;
             block.physicsBody.allowsRotation = NO;
             block.physicsBody.usesPreciseCollisionDetection = YES;
             block.physicsBody.affectedByGravity = NO;
-            block.physicsBody.contactTestBitMask = 1;
+            block.physicsBody.categoryBitMask = blockCategory;
+            block.physicsBody.contactTestBitMask = playerCategory;
+            block.physicsBody.collisionBitMask = playerCategory;
             
             /*
             SKTexture *walkLeft1 = [SKTexture textureWithImageNamed:@"player-jumping-left"];
@@ -201,6 +212,39 @@ const int blockSize = 12;
     }
     
     self.backgroundColor = [NSColor colorWithCalibratedRed:0.580f green:0.580f blue:1.000f alpha:1.00f];
+}
+
+- (void)breakBlock:(SKNode*)block {
+    SKSpriteNode *blockDebris = [SKSpriteNode spriteNodeWithImageNamed:@"block-debris"];
+    blockDebris.size = CGSizeMake(blockSize/2, blockSize/2);
+    blockDebris.position = block.position;
+    blockDebris.scale = 1;
+    
+    blockDebris.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:blockDebris.size];
+    blockDebris.physicsBody.dynamic = YES;
+    blockDebris.physicsBody.allowsRotation = YES;
+    blockDebris.physicsBody.usesPreciseCollisionDetection = NO;
+    blockDebris.physicsBody.affectedByGravity = YES;
+    blockDebris.zPosition = 100;
+    blockDebris.physicsBody.categoryBitMask = blockDebrisCategory;
+    blockDebris.physicsBody.contactTestBitMask = noCategory;
+    blockDebris.physicsBody.collisionBitMask = noCategory;
+    
+    SKSpriteNode *debris1 = blockDebris.copy;
+    SKSpriteNode *debris2 = blockDebris.copy;
+    SKSpriteNode *debris3 = blockDebris.copy;
+    SKSpriteNode *debris4 = blockDebris.copy;
+    
+    [self addChild:debris1];
+    [self addChild:debris2];
+    [self addChild:debris3];
+    [self addChild:debris4];
+    
+    [debris1.physicsBody applyImpulse:CGVectorMake(0.05f, 0.2f) atPoint:blockDebris.position];
+    [debris2.physicsBody applyImpulse:CGVectorMake(-0.05f, 0.2f) atPoint:blockDebris.position];
+    [debris3.physicsBody applyImpulse:CGVectorMake(0.05f, 0.1f) atPoint:blockDebris.position];
+    [debris4.physicsBody applyImpulse:CGVectorMake(-0.05f, 0.1f) atPoint:blockDebris.position];
+    [block removeFromParent];
 }
 
 - (void) renderPlayerPosition {
@@ -263,7 +307,7 @@ const int blockSize = 12;
     SKPhysicsBody *playerBody = contact.bodyA;
     SKPhysicsBody *blockBody  = contact.bodyB;
     
-    if (contact.bodyB.node.physicsBody.contactTestBitMask == 0) {
+    if (contact.bodyB.node.physicsBody.categoryBitMask == playerCategory) {
         playerBody = contact.bodyB;
         blockBody = contact.bodyA;
     }
@@ -277,37 +321,6 @@ const int blockSize = 12;
 
         //blockBody.node.speed = 1;
     }
-}
-
-- (void)breakBlock:(SKNode*)block {
-    SKSpriteNode *blockDebris = [SKSpriteNode spriteNodeWithImageNamed:@"block-debris"];
-    blockDebris.size = CGSizeMake(blockSize/2, blockSize/2);
-    blockDebris.position = block.position;
-    blockDebris.scale = 1;
-    
-    blockDebris.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:blockDebris.size];
-    blockDebris.physicsBody.dynamic = YES;
-    blockDebris.physicsBody.allowsRotation = YES;
-    blockDebris.physicsBody.usesPreciseCollisionDetection = NO;
-    blockDebris.physicsBody.affectedByGravity = YES;
-    blockDebris.physicsBody.collisionBitMask = 0;
-    blockDebris.zPosition = 100;
-    
-    SKSpriteNode *debris1 = blockDebris.copy;
-    SKSpriteNode *debris2 = blockDebris.copy;
-    SKSpriteNode *debris3 = blockDebris.copy;
-    SKSpriteNode *debris4 = blockDebris.copy;
-    
-    [self addChild:debris1];
-    [self addChild:debris2];
-    [self addChild:debris3];
-    [self addChild:debris4];
-    
-    [debris1.physicsBody applyImpulse:CGVectorMake(0.05f, 0.2f) atPoint:blockDebris.position];
-    [debris2.physicsBody applyImpulse:CGVectorMake(-0.05f, 0.2f) atPoint:blockDebris.position];
-    [debris3.physicsBody applyImpulse:CGVectorMake(0.05f, 0.1f) atPoint:blockDebris.position];
-    [debris4.physicsBody applyImpulse:CGVectorMake(-0.05f, 0.1f) atPoint:blockDebris.position];
-    [block removeFromParent];
 }
 
 - (void) update:(CFTimeInterval)currentTime {
