@@ -35,8 +35,8 @@ typedef NS_ENUM(NSInteger, Direction) {
     int _animationTicker;
 }
 
-const bool hardcodeBlocks = NO;
-const int blockSize = 10;
+const bool hardcodeBlocks = YES;
+const int blockSize = 12;
 
 - (void) didChangeSize:(CGSize)oldSize {
     [self clearSpritesFromScene];
@@ -199,6 +199,8 @@ const int blockSize = 10;
             [self addChild:block];
         }
     }
+    
+    self.backgroundColor = [NSColor colorWithCalibratedRed:0.580f green:0.580f blue:1.000f alpha:1.00f];
 }
 
 - (void) renderPlayerPosition {
@@ -210,7 +212,7 @@ const int blockSize = 10;
     if (_upPressed) {
         if (!_isJumping) {
             _isJumping = YES;
-            [_sprite.physicsBody applyImpulse:CGVectorMake(0.0f, 1.5f) atPoint:_sprite.position];
+            [_sprite.physicsBody applyImpulse:CGVectorMake(0.0f, 2.4f) atPoint:_sprite.position];
             if (_isFacingLeft) {
                 [self changeSpriteTexture:@"player-jumping-left"];
             } else {
@@ -263,18 +265,49 @@ const int blockSize = 10;
     
     if (contact.bodyB.node.physicsBody.contactTestBitMask == 0) {
         playerBody = contact.bodyB;
-        blockBody = contact.bodyB;
+        blockBody = contact.bodyA;
     }
     
     if ((playerBody.node.position.y < contact.contactPoint.y) && (blockBody.node.position.y > contact.contactPoint.y)) {
         [playerBody applyImpulse:CGVectorMake(0.0f, -0.4f) atPoint:playerBody.node.position];
         
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-           [blockBody.node removeFromParent];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+           [self breakBlock:blockBody.node];
         });
 
         //blockBody.node.speed = 1;
     }
+}
+
+- (void)breakBlock:(SKNode*)block {
+    SKSpriteNode *blockDebris = [SKSpriteNode spriteNodeWithImageNamed:@"block-debris"];
+    blockDebris.size = CGSizeMake(blockSize/2, blockSize/2);
+    blockDebris.position = block.position;
+    blockDebris.scale = 1;
+    
+    blockDebris.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:blockDebris.size];
+    blockDebris.physicsBody.dynamic = YES;
+    blockDebris.physicsBody.allowsRotation = YES;
+    blockDebris.physicsBody.usesPreciseCollisionDetection = NO;
+    blockDebris.physicsBody.affectedByGravity = YES;
+    blockDebris.physicsBody.collisionBitMask = 0;
+    blockDebris.zPosition = 100;
+    
+    SKSpriteNode *debris1 = blockDebris.copy;
+    SKSpriteNode *debris2 = blockDebris.copy;
+    SKSpriteNode *debris3 = blockDebris.copy;
+    SKSpriteNode *debris4 = blockDebris.copy;
+    
+    [self addChild:debris1];
+    [self addChild:debris2];
+    [self addChild:debris3];
+    [self addChild:debris4];
+    
+    [debris1.physicsBody applyImpulse:CGVectorMake(0.05f, 0.2f) atPoint:blockDebris.position];
+    [debris2.physicsBody applyImpulse:CGVectorMake(-0.05f, 0.2f) atPoint:blockDebris.position];
+    [debris3.physicsBody applyImpulse:CGVectorMake(0.05f, 0.1f) atPoint:blockDebris.position];
+    [debris4.physicsBody applyImpulse:CGVectorMake(-0.05f, 0.1f) atPoint:blockDebris.position];
+    [block removeFromParent];
 }
 
 - (void) update:(CFTimeInterval)currentTime {

@@ -36,8 +36,6 @@
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
     _scene = [GameScene unarchiveFromFile:@"GameScene"];
 
-    _scene.backgroundColor = self.window.backgroundColor;
-    
     // Set the scale mode to scale to fit the window
     _scene.scaleMode = SKSceneScaleModeResizeFill;
     [self.skView presentScene:_scene];
@@ -59,6 +57,7 @@
 - (void)makeWindowTransparent {
     self.window.opaque = NO;
     self.window.alphaValue = 0.4;
+    _scene.backgroundColor = self.window.backgroundColor;
 }
 
 - (void)makeWindowOpaque {
