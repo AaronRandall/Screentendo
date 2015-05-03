@@ -36,7 +36,7 @@ typedef NS_ENUM(NSInteger, Direction) {
 }
 
 const bool hardcodeBlocks = YES;
-const int blockSize = 12;
+const int blockSize = 10;
 
 const uint32_t playerCategory = 0x1 << 0;
 const uint32_t blockCategory = 0x1 << 1;
@@ -149,7 +149,9 @@ const uint32_t noCategory = 0x1 << 3;
                     block.physicsBody.allowsRotation = NO;
                     block.physicsBody.usesPreciseCollisionDetection = YES;
                     block.physicsBody.affectedByGravity = NO;
-                    block.physicsBody.contactTestBitMask = 1;
+                    block.physicsBody.categoryBitMask = blockCategory;
+                    block.physicsBody.contactTestBitMask = playerCategory;
+                    block.physicsBody.collisionBitMask = playerCategory;
                     
                     [_blocks addObject:block];
                     [self addChild:block];
@@ -215,6 +217,8 @@ const uint32_t noCategory = 0x1 << 3;
 }
 
 - (void)breakBlock:(SKNode*)block {
+    NSLog(@"** BREAKING BLOCK in ticket: %d", _animationTicker);
+    
     SKSpriteNode *blockDebris = [SKSpriteNode spriteNodeWithImageNamed:@"block-debris"];
     blockDebris.size = CGSizeMake(blockSize/2, blockSize/2);
     blockDebris.position = block.position;
@@ -253,10 +257,16 @@ const uint32_t noCategory = 0x1 << 3;
     
     int deltaChange = 1.7;
     
+    NSDictionary* physicsRatios = @{ [NSNumber numberWithInt:10]: @1.8f,
+                                     [NSNumber numberWithInt:8]: @1.0f,
+                                     [NSNumber numberWithInt:6]: @0.5f,
+                                    };
+    float jumpImpulse = [physicsRatios[[NSNumber numberWithInt:blockSize]] floatValue];
+    
     if (_upPressed) {
         if (!_isJumping) {
             _isJumping = YES;
-            [_sprite.physicsBody applyImpulse:CGVectorMake(0.0f, 2.4f) atPoint:_sprite.position];
+            [_sprite.physicsBody applyImpulse:CGVectorMake(0.0f, jumpImpulse) atPoint:_sprite.position];
             if (_isFacingLeft) {
                 [self changeSpriteTexture:@"player-jumping-left"];
             } else {
@@ -264,7 +274,7 @@ const uint32_t noCategory = 0x1 << 3;
             }
         }
     } else if (_downPressed) {
-        yDelta = -deltaChange;
+        //yDelta = -deltaChange;
     }
     
     if (_rightPressed) {
@@ -316,10 +326,22 @@ const uint32_t noCategory = 0x1 << 3;
         [playerBody applyImpulse:CGVectorMake(0.0f, -0.4f) atPoint:playerBody.node.position];
         
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            NSLog(@"Breaking block with data:");
+            NSLog(@"Player position x,y=%f,%f", playerBody.node.position.x, playerBody.node.position.y);
+            NSLog(@"Block position x,y=%f,%f", blockBody.node.position.x, blockBody.node.position.y);
+            NSLog(@"Contact position x,y=%f,%f", contact.contactPoint.x, contact.contactPoint.y);
            [self breakBlock:blockBody.node];
         });
 
         //blockBody.node.speed = 1;
+    }
+}
+
+- (void)didSimulatePhysics {
+    if (_sprite.physicsBody.velocity.dy > 200) {
+        NSLog(@"%f",_sprite.physicsBody.velocity.dy);
+        NSLog(@"Dampening");
+        _sprite.physicsBody.velocity = CGVectorMake(_sprite.physicsBody.velocity.dx,200);
     }
 }
 
