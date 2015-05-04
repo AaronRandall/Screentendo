@@ -36,7 +36,7 @@ typedef NS_ENUM(NSInteger, Direction) {
 }
 
 const bool hardcodeBlocks = YES;
-const int blockSize = 10;
+const int blockSize = 12;
 
 const uint32_t playerCategory = 0x1 << 0;
 const uint32_t blockCategory = 0x1 << 1;
@@ -115,6 +115,18 @@ const uint32_t noCategory = 0x1 << 3;
     self.physicsWorld.contactDelegate = self;
     
     CGPoint location = [theEvent locationInNode:self];
+    
+    SKSpriteNode *cloudTemplate = [SKSpriteNode spriteNodeWithImageNamed:@"cloud"];
+    cloudTemplate.size = CGSizeMake(blockSize*4, blockSize*3);
+    
+    SKSpriteNode *cloud1 = [cloudTemplate copy];
+    cloud1.position = CGPointMake(blockSize*4, self.frame.size.height - (blockSize * 2));
+    [self addChild:cloud1];
+
+    SKSpriteNode *cloud2 = [cloudTemplate copy];
+    cloud2.position = CGPointMake(self.frame.size.width - (blockSize*3), self.frame.size.height - (blockSize * 4));
+    [self addChild:cloud2];
+    
     _sprite = [SKSpriteNode spriteNodeWithImageNamed:@"player-standing-right"];
     _sprite.size = CGSizeMake(blockSize, blockSize * 2);
     _sprite.position = CGPointMake(location.x, location.y + 230);
@@ -257,7 +269,8 @@ const uint32_t noCategory = 0x1 << 3;
     
     int deltaChange = 1.7;
     
-    NSDictionary* physicsRatios = @{ [NSNumber numberWithInt:10]: @1.8f,
+    NSDictionary* physicsRatios = @{ [NSNumber numberWithInt:12]: @3.0f,
+                                     [NSNumber numberWithInt:10]: @1.8f,
                                      [NSNumber numberWithInt:8]: @1.0f,
                                      [NSNumber numberWithInt:6]: @0.5f,
                                     };
