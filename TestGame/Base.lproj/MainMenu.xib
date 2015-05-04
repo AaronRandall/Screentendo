@@ -65,36 +65,32 @@
                 <menuItem title="Window" id="19">
                     <menu key="submenu" title="Window" systemMenu="window" id="24">
                         <items>
-                            <menuItem title="Minimize" keyEquivalent="m" id="537">
-                                <connections>
-                                    <action selector="performMiniaturize:" target="-1" id="538"/>
-                                </connections>
+                            <menuItem title="Block size" id="tP1-YT-wAO">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <menu key="submenu" title="Block size" id="gcu-XO-d8J">
+                                    <items>
+                                        <menuItem title="Small" id="TUT-A7-Cas">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="blockSizeSmallSelected:" target="-1" id="ohQ-rs-gEJ"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Medium" state="on" id="5CC-oT-sjF">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="blockSizeMediumSelected:" target="-1" id="QSf-Hz-BjA"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Large" id="qRM-Vg-wKf">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="blockSizeLargeSelected:" target="-1" id="Kwf-bQ-nE8"/>
+                                            </connections>
+                                        </menuItem>
+                                    </items>
+                                </menu>
                             </menuItem>
-                            <menuItem title="Zoom" id="239">
-                                <connections>
-                                    <action selector="performZoom:" target="-1" id="240"/>
-                                </connections>
-                            </menuItem>
-                            <menuItem isSeparatorItem="YES" id="92">
-                                <modifierMask key="keyEquivalentModifierMask" command="YES"/>
-                            </menuItem>
-                            <menuItem title="Bring All to Front" id="5">
-                                <connections>
-                                    <action selector="arrangeInFront:" target="-1" id="39"/>
-                                </connections>
-                            </menuItem>
-                        </items>
-                    </menu>
-                </menuItem>
-                <menuItem title="Help" id="490">
-                    <modifierMask key="keyEquivalentModifierMask"/>
-                    <menu key="submenu" title="Help" systemMenu="help" id="491">
-                        <items>
-                            <menuItem title="Tim Help" keyEquivalent="?" id="492">
-                                <connections>
-                                    <action selector="showHelp:" target="-1" id="493"/>
-                                </connections>
-                            </menuItem>
+                            <menuItem isSeparatorItem="YES" id="XH8-Uf-rzn"/>
                         </items>
                     </menu>
                 </menuItem>
@@ -124,10 +120,16 @@
         </window>
         <customObject id="494" customClass="AppDelegate">
             <connections>
+                <outlet property="blockSizeLargeMenuItem" destination="qRM-Vg-wKf" id="Hcx-04-jlF"/>
+                <outlet property="blockSizeMediumMenuItem" destination="5CC-oT-sjF" id="3MX-vH-BSy"/>
+                <outlet property="blockSizeSmallMenuItem" destination="TUT-A7-Cas" id="rf1-63-lwz"/>
                 <outlet property="skView" destination="539" id="540"/>
                 <outlet property="window" destination="371" id="532"/>
             </connections>
         </customObject>
         <customObject id="420" customClass="NSFontManager"/>
+        <menuItem title="Item" id="4jU-QV-OLJ">
+            <modifierMask key="keyEquivalentModifierMask"/>
+        </menuItem>
     </objects>
 </document>

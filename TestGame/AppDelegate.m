@@ -71,4 +71,31 @@
     [_scene clearSpritesFromScene];
 }
 
+- (IBAction)blockSizeSmallSelected:(id)sender {
+    NSLog(@"Block size small selected");
+    _scene.blockSize = 8;
+    
+    self.blockSizeSmallMenuItem.state = NSOnState;
+    self.blockSizeMediumMenuItem.state = NSOffState;
+    self.blockSizeLargeMenuItem.state = NSOffState;
+}
+
+- (IBAction)blockSizeMediumSelected:(id)sender {
+    NSLog(@"Block size medium selected");
+    _scene.blockSize = 10;
+    
+    self.blockSizeSmallMenuItem.state = NSOffState;
+    self.blockSizeMediumMenuItem.state = NSOnState;
+    self.blockSizeLargeMenuItem.state = NSOffState;
+}
+
+- (IBAction)blockSizeLargeSelected:(id)sender {
+    NSLog(@"Block size large selected");
+    _scene.blockSize = 12;
+    
+    self.blockSizeSmallMenuItem.state = NSOffState;
+    self.blockSizeMediumMenuItem.state = NSOffState;
+    self.blockSizeLargeMenuItem.state = NSOnState;
+}
+
 @end

@@ -10,6 +10,8 @@
 
 @interface GameScene : SKScene
 
+@property (nonatomic) int blockSize;
+
 - (void)clearSpritesFromScene;
 
 @end

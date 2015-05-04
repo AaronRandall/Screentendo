@@ -35,8 +35,8 @@ typedef NS_ENUM(NSInteger, Direction) {
     int _animationTicker;
 }
 
-const bool hardcodeBlocks = YES;
-const int blockSize = 12;
+const int defaultBlockSize = 10;
+const bool hardcodeBlocks = NO;
 
 const uint32_t playerCategory = 0x1 << 0;
 const uint32_t blockCategory = 0x1 << 1;
@@ -50,6 +50,14 @@ const uint32_t noCategory = 0x1 << 3;
 
 - (void)windowDidResize {
     NSLog(@"Window resized");
+}
+
+- (int)blockSize {
+    if (!_blockSize) {
+        _blockSize = defaultBlockSize;
+    }
+    
+    return _blockSize;
 }
 
 - (void) keyDown:(NSEvent *)event {
@@ -108,7 +116,7 @@ const uint32_t noCategory = 0x1 << 3;
 
     NSArray *imageArray = nil;
     if (!hardcodeBlocks) {
-        imageArray = [ImageStructureAnalyser topLevelWindowToBinaryArrayWithBlockSize:blockSize];
+        imageArray = [ImageStructureAnalyser topLevelWindowToBinaryArrayWithBlockSize:self.blockSize];
     }
     
     self.physicsWorld.gravity = CGVectorMake(0, -3);
@@ -117,18 +125,19 @@ const uint32_t noCategory = 0x1 << 3;
     CGPoint location = [theEvent locationInNode:self];
     
     SKSpriteNode *cloudTemplate = [SKSpriteNode spriteNodeWithImageNamed:@"cloud"];
-    cloudTemplate.size = CGSizeMake(blockSize*4, blockSize*3);
+    cloudTemplate.size = CGSizeMake(self.blockSize*4, self.blockSize*3);
+    cloudTemplate.zPosition = 0;
     
     SKSpriteNode *cloud1 = [cloudTemplate copy];
-    cloud1.position = CGPointMake(blockSize*4, self.frame.size.height - (blockSize * 2));
+    cloud1.position = CGPointMake(self.blockSize*4, self.frame.size.height/1.2);
     [self addChild:cloud1];
 
     SKSpriteNode *cloud2 = [cloudTemplate copy];
-    cloud2.position = CGPointMake(self.frame.size.width - (blockSize*3), self.frame.size.height - (blockSize * 4));
+    cloud2.position = CGPointMake(self.frame.size.width/1.5, self.frame.size.height/1.5);
     [self addChild:cloud2];
     
     _sprite = [SKSpriteNode spriteNodeWithImageNamed:@"player-standing-right"];
-    _sprite.size = CGSizeMake(blockSize, blockSize * 2);
+    _sprite.size = CGSizeMake(self.blockSize, self.blockSize * 2);
     _sprite.position = CGPointMake(location.x, location.y + 230);
     _sprite.scale = 1;
     _sprite.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:CGSizeMake(_sprite.size.width, _sprite.size.height)];
@@ -153,8 +162,8 @@ const uint32_t noCategory = 0x1 << 3;
                 
                 if ([currentColor isEqualToNumber:[NSNumber numberWithInt:1]]) {
                     SKSpriteNode *block = [SKSpriteNode spriteNodeWithImageNamed:@"block"];
-                    block.size = CGSizeMake(blockSize, blockSize);
-                    block.position = CGPointMake(x*blockSize,(blocksHigh * blockSize) - y*blockSize);
+                    block.size = CGSizeMake(self.blockSize, self.blockSize);
+                    block.position = CGPointMake(x*self.blockSize,(blocksHigh * self.blockSize) - y*self.blockSize);
                     block.scale = 1;
                     block.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:CGSizeMake(block.size.width, block.size.height)];
                     block.physicsBody.dynamic = NO;
@@ -178,8 +187,8 @@ const uint32_t noCategory = 0x1 << 3;
         int numBlocks = 20;
         for (int i = 0; i < numBlocks; i++) {
             SKSpriteNode *block = [SKSpriteNode spriteNodeWithImageNamed:@"block"];
-            block.size = CGSizeMake(blockSize, blockSize);
-            block.position = CGPointMake(location.x + ((i*blockSize)-((numBlocks/2)*blockSize)),location.y);
+            block.size = CGSizeMake(self.blockSize, self.blockSize);
+            block.position = CGPointMake(location.x + ((i*self.blockSize)-((numBlocks/2)*self.blockSize)),location.y);
             block.scale = 1;
             
             block.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:block.size];
@@ -197,8 +206,8 @@ const uint32_t noCategory = 0x1 << 3;
         
         for (int i = 0; i < numBlocks/2; i++) {
             SKSpriteNode *block = [SKSpriteNode spriteNodeWithImageNamed:@"block"];
-            block.size = CGSizeMake(blockSize, blockSize);
-            block.position = CGPointMake(location.x + ((i*blockSize)-((numBlocks/2)*blockSize)),location.y + (blockSize*4));
+            block.size = CGSizeMake(self.blockSize, self.blockSize);
+            block.position = CGPointMake(location.x + ((i*self.blockSize)-((numBlocks/2)*self.blockSize)),location.y + (self.blockSize*4));
             block.scale = 1;
             
             block.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:block.size];
@@ -225,14 +234,12 @@ const uint32_t noCategory = 0x1 << 3;
         }
     }
     
-    self.backgroundColor = [NSColor colorWithCalibratedRed:0.580f green:0.580f blue:1.000f alpha:1.00f];
+    self.backgroundColor = [NSColor colorWithCalibratedRed:0.480f green:0.480f blue:1.000f alpha:1.00f];
 }
 
 - (void)breakBlock:(SKNode*)block {
-    NSLog(@"** BREAKING BLOCK in ticket: %d", _animationTicker);
-    
     SKSpriteNode *blockDebris = [SKSpriteNode spriteNodeWithImageNamed:@"block-debris"];
-    blockDebris.size = CGSizeMake(blockSize/2, blockSize/2);
+    blockDebris.size = CGSizeMake(self.blockSize/2, self.blockSize/2);
     blockDebris.position = block.position;
     blockDebris.scale = 1;
     
@@ -269,12 +276,13 @@ const uint32_t noCategory = 0x1 << 3;
     
     int deltaChange = 1.7;
     
-    NSDictionary* physicsRatios = @{ [NSNumber numberWithInt:12]: @3.0f,
-                                     [NSNumber numberWithInt:10]: @1.8f,
-                                     [NSNumber numberWithInt:8]: @1.0f,
-                                     [NSNumber numberWithInt:6]: @0.5f,
+    NSDictionary* physicsRatios = @{[NSNumber numberWithInt:14]: @4.3f,
+                                    [NSNumber numberWithInt:12]: @3.0f,
+                                    [NSNumber numberWithInt:10]: @1.8f,
+                                    [NSNumber numberWithInt:8]: @1.0f,
+                                    [NSNumber numberWithInt:6]: @0.5f,
                                     };
-    float jumpImpulse = [physicsRatios[[NSNumber numberWithInt:blockSize]] floatValue];
+    float jumpImpulse = [physicsRatios[[NSNumber numberWithInt:self.blockSize]] floatValue];
     
     if (_upPressed) {
         if (!_isJumping) {
@@ -345,13 +353,11 @@ const uint32_t noCategory = 0x1 << 3;
             NSLog(@"Contact position x,y=%f,%f", contact.contactPoint.x, contact.contactPoint.y);
            [self breakBlock:blockBody.node];
         });
-
-        //blockBody.node.speed = 1;
     }
 }
 
 - (void)didSimulatePhysics {
-    if (_sprite.physicsBody.velocity.dy > 200) {
+    if (_sprite.physicsBody.velocity.dy > 350) {
         NSLog(@"%f",_sprite.physicsBody.velocity.dy);
         NSLog(@"Dampening");
         _sprite.physicsBody.velocity = CGVectorMake(_sprite.physicsBody.velocity.dx,200);
