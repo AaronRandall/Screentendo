@@ -13,10 +13,10 @@
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <menu title="AMainMenu" systemMenu="main" id="29">
             <items>
-                <menuItem title="TestGame" id="56">
-                    <menu key="submenu" title="TestGame" systemMenu="apple" id="57">
+                <menuItem title="Screentendo" id="56">
+                    <menu key="submenu" title="Screentendo" systemMenu="apple" id="57">
                         <items>
-                            <menuItem title="About TestGame" id="58">
+                            <menuItem title="About Screentendo" id="58">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
                                     <action selector="orderFrontStandardAboutPanel:" target="-2" id="142"/>
@@ -96,7 +96,7 @@
                 </menuItem>
             </items>
         </menu>
-        <window title="TestGame" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" animationBehavior="default" id="371">
+        <window title="Screentendo" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" animationBehavior="default" id="371">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowCollectionBehavior key="collectionBehavior" fullScreenPrimary="YES"/>
             <rect key="contentRect" x="0.0" y="0.0" width="245" height="133"/>
@@ -116,7 +116,7 @@
                     <constraint firstItem="539" firstAttribute="leading" secondItem="372" secondAttribute="leading" id="544"/>
                 </constraints>
             </view>
-            <point key="canvasLocation" x="-137.5" y="160.5"/>
+            <point key="canvasLocation" x="58.5" y="294.5"/>
         </window>
         <customObject id="494" customClass="AppDelegate">
             <connections>

@@ -31,29 +31,29 @@
     GameScene *_scene;
 }
 
+const float transparentAlphaValue = 0.4f;
+
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
     _scene = [GameScene unarchiveFromFile:@"GameScene"];
-    
-    // Set the scale mode to scale to fit the window
     _scene.scaleMode = SKSceneScaleModeResizeFill;
-    [self.skView presentScene:_scene];
     
     self.skView.ignoresSiblingOrder = YES;
-    self.skView.showsFPS = NO;
-    self.skView.showsNodeCount = NO;
-    
-    [self makeWindowTransparent];
-    
     self.window.delegate = self;
+    
+    [self.skView presentScene:_scene];
+    [self makeWindowTransparent];
 }
 
 - (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)sender {
     return YES;
 }
 
+#pragma mark -
+#pragma mark Window actions
+
 - (void)makeWindowTransparent {
     self.window.opaque = NO;
-    self.window.alphaValue = 0.4;
+    self.window.alphaValue = transparentAlphaValue;
     _scene.backgroundColor = self.window.backgroundColor;
 }
 
@@ -67,28 +67,31 @@
     [_scene resetScene];
 }
 
+#pragma mark -
+#pragma mark Menu actions
+
 - (IBAction)blockSizeSmallSelected:(id)sender {
     _scene.blockSize = 8;
-    
+    [self setAllMenuItemsToState:NSOffState];
     self.blockSizeSmallMenuItem.state = NSOnState;
-    self.blockSizeMediumMenuItem.state = NSOffState;
-    self.blockSizeLargeMenuItem.state = NSOffState;
 }
 
 - (IBAction)blockSizeMediumSelected:(id)sender {
     _scene.blockSize = 10;
-    
-    self.blockSizeSmallMenuItem.state = NSOffState;
+    [self setAllMenuItemsToState:NSOffState];
     self.blockSizeMediumMenuItem.state = NSOnState;
-    self.blockSizeLargeMenuItem.state = NSOffState;
 }
 
 - (IBAction)blockSizeLargeSelected:(id)sender {
     _scene.blockSize = 12;
-    
-    self.blockSizeSmallMenuItem.state = NSOffState;
-    self.blockSizeMediumMenuItem.state = NSOffState;
+    [self setAllMenuItemsToState:NSOffState];
     self.blockSizeLargeMenuItem.state = NSOnState;
+}
+
+- (void)setAllMenuItemsToState:(NSCellStateValue)state {
+    self.blockSizeSmallMenuItem.state  = state;
+    self.blockSizeMediumMenuItem.state = state;
+    self.blockSizeLargeMenuItem.state  = state;
 }
 
 @end

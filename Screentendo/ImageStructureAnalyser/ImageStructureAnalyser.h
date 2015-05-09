@@ -10,6 +10,6 @@
 
 @interface ImageStructureAnalyser : NSObject
 
-+ (NSArray*)topLevelWindowToBinaryArrayWithBlockSize:(int)blockSize;
++ (NSArray*)binaryArrayFromImage:(NSImage*)image blockSize:(int)blockSize;
 
 @end

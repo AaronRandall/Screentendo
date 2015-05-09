@@ -7,13 +7,11 @@
 //
 
 #import "ImageStructureAnalyser.h"
-#import "Window.h"
 #import "NSImage+ImageProcessing.h"
 
 @implementation ImageStructureAnalyser
 
-+ (NSArray*)topLevelWindowToBinaryArrayWithBlockSize:(int)blockSize {
-    NSImage *image = [Window croppedImageOfTopLevelWindow];
++ (NSArray*)binaryArrayFromImage:(NSImage*)image blockSize:(int)blockSize {
     image = [image toBlackAndWhiteBlocks];
     NSMutableArray *imageArray = [image toBinaryArrayWithBlockSize:blockSize];
     return imageArray;
