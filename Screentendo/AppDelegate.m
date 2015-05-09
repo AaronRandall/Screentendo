@@ -13,9 +13,7 @@
 @implementation SKScene (Unarchive)
 
 + (instancetype)unarchiveFromFile:(NSString *)file {
-    // Retrieve scene file path from the application bundle
     NSString *nodePath = [[NSBundle mainBundle] pathForResource:file ofType:@"sks"];
-    // Unarchive the file to an SKScene object
     NSData *data = [NSData dataWithContentsOfFile:nodePath
                                           options:NSDataReadingMappedIfSafe
                                             error:nil];
@@ -40,7 +38,6 @@
     _scene.scaleMode = SKSceneScaleModeResizeFill;
     [self.skView presentScene:_scene];
     
-    // Sprite Kit applies additional optimizations to improve rendering performance
     self.skView.ignoresSiblingOrder = YES;
     self.skView.showsFPS = NO;
     self.skView.showsNodeCount = NO;
@@ -66,13 +63,11 @@
 }
 
 - (void)windowWillMove:(NSNotification *)notification {
-    NSLog(@"Window moving");
     [self makeWindowTransparent];
-    [_scene clearSpritesFromScene];
+    [_scene resetScene];
 }
 
 - (IBAction)blockSizeSmallSelected:(id)sender {
-    NSLog(@"Block size small selected");
     _scene.blockSize = 8;
     
     self.blockSizeSmallMenuItem.state = NSOnState;
@@ -81,7 +76,6 @@
 }
 
 - (IBAction)blockSizeMediumSelected:(id)sender {
-    NSLog(@"Block size medium selected");
     _scene.blockSize = 10;
     
     self.blockSizeSmallMenuItem.state = NSOffState;
@@ -90,7 +84,6 @@
 }
 
 - (IBAction)blockSizeLargeSelected:(id)sender {
-    NSLog(@"Block size large selected");
     _scene.blockSize = 12;
     
     self.blockSizeSmallMenuItem.state = NSOffState;

@@ -12,6 +12,6 @@
 
 @property (nonatomic) int blockSize;
 
-- (void)clearSpritesFromScene;
+- (void)resetScene;
 
 @end

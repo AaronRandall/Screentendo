@@ -12,13 +12,13 @@
 		731AED111AFE7B6A00D15B71 /* GameScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 731AED101AFE7B6A00D15B71 /* GameScene.m */; };
 		731AED131AFE7B6A00D15B71 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 731AED121AFE7B6A00D15B71 /* GameScene.sks */; };
 		731AED241AFE7B6A00D15B71 /* ScreentendoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 731AED231AFE7B6A00D15B71 /* ScreentendoTests.m */; };
-		731AED301AFE7C9800D15B71 /* ImageStructureAnalyser.m in Sources */ = {isa = PBXBuildFile; fileRef = 731AED2F1AFE7C9800D15B71 /* ImageStructureAnalyser.m */; };
-		731AED3A1AFE7CB100D15B71 /* Window.m in Sources */ = {isa = PBXBuildFile; fileRef = 731AED331AFE7CB100D15B71 /* Window.m */; };
-		731AED3B1AFE7CB100D15B71 /* KPCScaleToFillNSImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 731AED351AFE7CB100D15B71 /* KPCScaleToFillNSImageView.m */; };
-		731AED3C1AFE7CB100D15B71 /* NSMutableArray+MultidimensionalAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 731AED371AFE7CB100D15B71 /* NSMutableArray+MultidimensionalAdditions.m */; };
-		731AED3D1AFE7CB100D15B71 /* NSImage+ImageProcessing.m in Sources */ = {isa = PBXBuildFile; fileRef = 731AED391AFE7CB100D15B71 /* NSImage+ImageProcessing.m */; };
 		731AED3F1AFE7CC900D15B71 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 731AED3E1AFE7CC900D15B71 /* Images.xcassets */; };
 		731AED411AFE7CD500D15B71 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 731AED401AFE7CD500D15B71 /* MainMenu.xib */; };
+		731AED4C1AFE7E4400D15B71 /* ImageStructureAnalyser.m in Sources */ = {isa = PBXBuildFile; fileRef = 731AED431AFE7E4400D15B71 /* ImageStructureAnalyser.m */; };
+		731AED4D1AFE7E4400D15B71 /* KPCScaleToFillNSImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 731AED451AFE7E4400D15B71 /* KPCScaleToFillNSImageView.m */; };
+		731AED4E1AFE7E4400D15B71 /* NSImage+ImageProcessing.m in Sources */ = {isa = PBXBuildFile; fileRef = 731AED471AFE7E4400D15B71 /* NSImage+ImageProcessing.m */; };
+		731AED4F1AFE7E4400D15B71 /* NSMutableArray+MultidimensionalAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 731AED491AFE7E4400D15B71 /* NSMutableArray+MultidimensionalAdditions.m */; };
+		731AED501AFE7E4400D15B71 /* Window.m in Sources */ = {isa = PBXBuildFile; fileRef = 731AED4B1AFE7E4400D15B71 /* Window.m */; };
 		D23B79637C0EAA745757B99C /* libPods-Screentendo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 27DDB0532298AF4CF9B690AE /* libPods-Screentendo.a */; };
 /* End PBXBuildFile section */
 
@@ -46,18 +46,18 @@
 		731AED1D1AFE7B6A00D15B71 /* ScreentendoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ScreentendoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		731AED221AFE7B6A00D15B71 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		731AED231AFE7B6A00D15B71 /* ScreentendoTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ScreentendoTests.m; sourceTree = "<group>"; };
-		731AED2E1AFE7C9800D15B71 /* ImageStructureAnalyser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageStructureAnalyser.h; sourceTree = "<group>"; };
-		731AED2F1AFE7C9800D15B71 /* ImageStructureAnalyser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageStructureAnalyser.m; sourceTree = "<group>"; };
-		731AED321AFE7CAA00D15B71 /* Window.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Window.h; sourceTree = "<group>"; };
-		731AED331AFE7CB100D15B71 /* Window.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Window.m; sourceTree = "<group>"; };
-		731AED341AFE7CB100D15B71 /* KPCScaleToFillNSImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KPCScaleToFillNSImageView.h; sourceTree = "<group>"; };
-		731AED351AFE7CB100D15B71 /* KPCScaleToFillNSImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KPCScaleToFillNSImageView.m; sourceTree = "<group>"; };
-		731AED361AFE7CB100D15B71 /* NSMutableArray+MultidimensionalAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableArray+MultidimensionalAdditions.h"; sourceTree = "<group>"; };
-		731AED371AFE7CB100D15B71 /* NSMutableArray+MultidimensionalAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableArray+MultidimensionalAdditions.m"; sourceTree = "<group>"; };
-		731AED381AFE7CB100D15B71 /* NSImage+ImageProcessing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSImage+ImageProcessing.h"; sourceTree = "<group>"; };
-		731AED391AFE7CB100D15B71 /* NSImage+ImageProcessing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSImage+ImageProcessing.m"; sourceTree = "<group>"; };
 		731AED3E1AFE7CC900D15B71 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		731AED401AFE7CD500D15B71 /* MainMenu.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainMenu.xib; sourceTree = "<group>"; };
+		731AED421AFE7E4400D15B71 /* ImageStructureAnalyser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ImageStructureAnalyser.h; path = ImageStructureAnalyser/ImageStructureAnalyser.h; sourceTree = "<group>"; };
+		731AED431AFE7E4400D15B71 /* ImageStructureAnalyser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ImageStructureAnalyser.m; path = ImageStructureAnalyser/ImageStructureAnalyser.m; sourceTree = "<group>"; };
+		731AED441AFE7E4400D15B71 /* KPCScaleToFillNSImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KPCScaleToFillNSImageView.h; path = ImageStructureAnalyser/KPCScaleToFillNSImageView.h; sourceTree = "<group>"; };
+		731AED451AFE7E4400D15B71 /* KPCScaleToFillNSImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KPCScaleToFillNSImageView.m; path = ImageStructureAnalyser/KPCScaleToFillNSImageView.m; sourceTree = "<group>"; };
+		731AED461AFE7E4400D15B71 /* NSImage+ImageProcessing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSImage+ImageProcessing.h"; path = "ImageStructureAnalyser/NSImage+ImageProcessing.h"; sourceTree = "<group>"; };
+		731AED471AFE7E4400D15B71 /* NSImage+ImageProcessing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSImage+ImageProcessing.m"; path = "ImageStructureAnalyser/NSImage+ImageProcessing.m"; sourceTree = "<group>"; };
+		731AED481AFE7E4400D15B71 /* NSMutableArray+MultidimensionalAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSMutableArray+MultidimensionalAdditions.h"; path = "ImageStructureAnalyser/NSMutableArray+MultidimensionalAdditions.h"; sourceTree = "<group>"; };
+		731AED491AFE7E4400D15B71 /* NSMutableArray+MultidimensionalAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSMutableArray+MultidimensionalAdditions.m"; path = "ImageStructureAnalyser/NSMutableArray+MultidimensionalAdditions.m"; sourceTree = "<group>"; };
+		731AED4A1AFE7E4400D15B71 /* Window.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Window.h; path = ImageStructureAnalyser/Window.h; sourceTree = "<group>"; };
+		731AED4B1AFE7E4400D15B71 /* Window.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Window.m; path = ImageStructureAnalyser/Window.m; sourceTree = "<group>"; };
 		A168B24C1FA11BAEE0ABF41E /* Pods-Screentendo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Screentendo.release.xcconfig"; path = "Pods/Target Support Files/Pods-Screentendo/Pods-Screentendo.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -162,26 +162,18 @@
 		731AED2D1AFE7C8200D15B71 /* ImageStructureAnalyser */ = {
 			isa = PBXGroup;
 			children = (
-				731AED311AFE7CA100D15B71 /* Classes */,
-				731AED2E1AFE7C9800D15B71 /* ImageStructureAnalyser.h */,
-				731AED2F1AFE7C9800D15B71 /* ImageStructureAnalyser.m */,
+				731AED421AFE7E4400D15B71 /* ImageStructureAnalyser.h */,
+				731AED431AFE7E4400D15B71 /* ImageStructureAnalyser.m */,
+				731AED441AFE7E4400D15B71 /* KPCScaleToFillNSImageView.h */,
+				731AED451AFE7E4400D15B71 /* KPCScaleToFillNSImageView.m */,
+				731AED461AFE7E4400D15B71 /* NSImage+ImageProcessing.h */,
+				731AED471AFE7E4400D15B71 /* NSImage+ImageProcessing.m */,
+				731AED481AFE7E4400D15B71 /* NSMutableArray+MultidimensionalAdditions.h */,
+				731AED491AFE7E4400D15B71 /* NSMutableArray+MultidimensionalAdditions.m */,
+				731AED4A1AFE7E4400D15B71 /* Window.h */,
+				731AED4B1AFE7E4400D15B71 /* Window.m */,
 			);
 			name = ImageStructureAnalyser;
-			sourceTree = "<group>";
-		};
-		731AED311AFE7CA100D15B71 /* Classes */ = {
-			isa = PBXGroup;
-			children = (
-				731AED321AFE7CAA00D15B71 /* Window.h */,
-				731AED331AFE7CB100D15B71 /* Window.m */,
-				731AED341AFE7CB100D15B71 /* KPCScaleToFillNSImageView.h */,
-				731AED351AFE7CB100D15B71 /* KPCScaleToFillNSImageView.m */,
-				731AED361AFE7CB100D15B71 /* NSMutableArray+MultidimensionalAdditions.h */,
-				731AED371AFE7CB100D15B71 /* NSMutableArray+MultidimensionalAdditions.m */,
-				731AED381AFE7CB100D15B71 /* NSImage+ImageProcessing.h */,
-				731AED391AFE7CB100D15B71 /* NSImage+ImageProcessing.m */,
-			);
-			name = Classes;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -320,13 +312,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				731AED0E1AFE7B6A00D15B71 /* main.m in Sources */,
+				731AED4E1AFE7E4400D15B71 /* NSImage+ImageProcessing.m in Sources */,
 				731AED111AFE7B6A00D15B71 /* GameScene.m in Sources */,
-				731AED301AFE7C9800D15B71 /* ImageStructureAnalyser.m in Sources */,
-				731AED3D1AFE7CB100D15B71 /* NSImage+ImageProcessing.m in Sources */,
-				731AED3B1AFE7CB100D15B71 /* KPCScaleToFillNSImageView.m in Sources */,
+				731AED501AFE7E4400D15B71 /* Window.m in Sources */,
+				731AED4D1AFE7E4400D15B71 /* KPCScaleToFillNSImageView.m in Sources */,
+				731AED4C1AFE7E4400D15B71 /* ImageStructureAnalyser.m in Sources */,
 				731AED0C1AFE7B6A00D15B71 /* AppDelegate.m in Sources */,
-				731AED3A1AFE7CB100D15B71 /* Window.m in Sources */,
-				731AED3C1AFE7CB100D15B71 /* NSMutableArray+MultidimensionalAdditions.m in Sources */,
+				731AED4F1AFE7E4400D15B71 /* NSMutableArray+MultidimensionalAdditions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -45,12 +45,8 @@ const uint32_t blockDebrisCategory = 0x1 << 2;
 const uint32_t noCategory = 0x1 << 3;
 
 - (void) didChangeSize:(CGSize)oldSize {
-    [self clearSpritesFromScene];
+    [self resetScene];
     [self makeAppWindowTransparent];
-}
-
-- (void)windowDidResize {
-    NSLog(@"Window resized");
 }
 
 - (int)blockSize {
@@ -99,7 +95,7 @@ const uint32_t noCategory = 0x1 << 3;
     }
 }
 
-- (void) clearSpritesFromScene {
+- (void) resetScene {
     [self removeAllChildren];
     [_blocks removeAllObjects];
 }
@@ -113,7 +109,7 @@ const uint32_t noCategory = 0x1 << 3;
 }
 
 - (void) mouseDown:(NSEvent *)theEvent {
-    [self clearSpritesFromScene];
+    [self resetScene];
     
     NSArray *imageArray = nil;
     if (!hardcodeBlocks) {
