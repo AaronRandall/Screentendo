@@ -94,131 +94,15 @@ const uint32_t noCategory = 0x1 << 3;
     }
 }
 
-- (void)mouseDown:(NSEvent *)theEvent {
+- (void)mouseDown:(NSEvent *)event {
     [self resetScene];
+    [self makeAppWindowTransparent];
     
-    NSArray *imageArray = nil;
-    if (!hardcodeBlocks) {
-        NSImage *image = [Window croppedImageOfTopLevelWindow];
-        imageArray = [ImageStructureAnalyser binaryArrayFromImage:image blockSize:self.blockSize];
-    }
-    
-    self.physicsWorld.gravity = CGVectorMake(0, -3);
-    self.physicsWorld.contactDelegate = self;
-    
-    CGPoint location = [theEvent locationInNode:self];
-    
-    SKSpriteNode *cloudTemplate = [SKSpriteNode spriteNodeWithImageNamed:@"cloud"];
-    cloudTemplate.size = CGSizeMake(self.blockSize*4, self.blockSize*3);
-    cloudTemplate.zPosition = 0;
-    
-    SKSpriteNode *cloud1 = [cloudTemplate copy];
-    cloud1.position = CGPointMake(self.blockSize*4, self.frame.size.height/1.2);
-    [self addChild:cloud1];
-    
-    SKSpriteNode *cloud2 = [cloudTemplate copy];
-    cloud2.position = CGPointMake(self.frame.size.width/1.5, self.frame.size.height/1.5);
-    [self addChild:cloud2];
-    
-    _sprite = [SKSpriteNode spriteNodeWithImageNamed:@"player-standing-right"];
-    _sprite.size = CGSizeMake(self.blockSize, self.blockSize * 2);
-    _sprite.position = CGPointMake(location.x, location.y + 230);
-    _sprite.scale = 1;
-    _sprite.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:CGSizeMake(_sprite.size.width, _sprite.size.height)];
-    _sprite.physicsBody.allowsRotation = NO;
-    _sprite.physicsBody.angularVelocity = 0.0f;
-    _sprite.physicsBody.angularDamping = 0.0f;
-    _sprite.physicsBody.dynamic = YES;
-    _sprite.physicsBody.categoryBitMask = playerCategory;
-    _sprite.physicsBody.contactTestBitMask = blockCategory;
-    _sprite.physicsBody.collisionBitMask = blockCategory;
-    
-    [self addChild:_sprite];
-    
-    if (!hardcodeBlocks) {
-        int blocksWide = (int)imageArray.count;
-        int blocksHigh = (int)[(NSArray*)[imageArray objectAtIndex:0] count];
-        
-        // Draw the blocks to the screen as images
-        for (int x = 0; x < blocksWide; x++) {
-            for (int y = 0; y < blocksHigh; y++) {
-                NSNumber *currentColor = imageArray[x][y];
-                
-                if ([currentColor isEqualToNumber:[NSNumber numberWithInt:1]]) {
-                    SKSpriteNode *block = [SKSpriteNode spriteNodeWithImageNamed:@"block"];
-                    block.size = CGSizeMake(self.blockSize, self.blockSize);
-                    block.position = CGPointMake(x*self.blockSize,(blocksHigh * self.blockSize) - y*self.blockSize);
-                    block.scale = 1;
-                    block.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:CGSizeMake(block.size.width, block.size.height)];
-                    block.physicsBody.dynamic = NO;
-                    block.physicsBody.allowsRotation = NO;
-                    block.physicsBody.usesPreciseCollisionDetection = YES;
-                    block.physicsBody.affectedByGravity = NO;
-                    block.physicsBody.categoryBitMask = blockCategory;
-                    block.physicsBody.contactTestBitMask = playerCategory;
-                    block.physicsBody.collisionBitMask = playerCategory;
-                    
-                    [_blocks addObject:block];
-                    [self addChild:block];
-                }
-            }
-        }
-    }
-    
-    [self makeAppWindowOpaque];
     if (hardcodeBlocks) {
-        // Hardcoded blocks
-        int numBlocks = 20;
-        for (int i = 0; i < numBlocks; i++) {
-            SKSpriteNode *block = [SKSpriteNode spriteNodeWithImageNamed:@"block"];
-            block.size = CGSizeMake(self.blockSize, self.blockSize);
-            block.position = CGPointMake(location.x + ((i*self.blockSize)-((numBlocks/2)*self.blockSize)),location.y);
-            block.scale = 1;
-            
-            block.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:block.size];
-            block.physicsBody.dynamic = NO;
-            block.physicsBody.allowsRotation = NO;
-            block.physicsBody.usesPreciseCollisionDetection = YES;
-            block.physicsBody.affectedByGravity = NO;
-            block.physicsBody.categoryBitMask = blockCategory;
-            block.physicsBody.contactTestBitMask = playerCategory;
-            block.physicsBody.collisionBitMask = playerCategory;
-            
-            [_blocks addObject:block];
-            [self addChild:block];
-        }
-        
-        for (int i = 0; i < numBlocks/2; i++) {
-            SKSpriteNode *block = [SKSpriteNode spriteNodeWithImageNamed:@"block"];
-            block.size = CGSizeMake(self.blockSize, self.blockSize);
-            block.position = CGPointMake(location.x + ((i*self.blockSize)-((numBlocks/2)*self.blockSize)),location.y + (self.blockSize*4));
-            block.scale = 1;
-            
-            block.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:block.size];
-            block.physicsBody.dynamic = NO;
-            block.physicsBody.allowsRotation = NO;
-            block.physicsBody.usesPreciseCollisionDetection = YES;
-            block.physicsBody.affectedByGravity = NO;
-            block.physicsBody.categoryBitMask = blockCategory;
-            block.physicsBody.contactTestBitMask = playerCategory;
-            block.physicsBody.collisionBitMask = playerCategory;
-            
-            /*
-             SKTexture *walkLeft1 = [SKTexture textureWithImageNamed:@"player-jumping-left"];
-             SKTexture *walkLeft2 = [SKTexture textureWithImageNamed:@"player-running-1-left"];
-             SKAction *walkLeft = [SKAction animateWithTextures:@[walkLeft1, walkLeft2] timePerFrame:0.3];
-             
-             SKAction *walkLeftAction = [SKAction repeatActionForever:walkLeft];
-             [block runAction:walkLeftAction withKey:@"walkLeft"];
-             block.speed = 0;
-             */
-            
-            [_blocks addObject:block];
-            [self addChild:block];
-        }
+        [self renderHardcodedSceneWithEvent:event];
+    } else {
+        [self renderSceneWithEvent:event];
     }
-    
-    self.backgroundColor = [NSColor colorWithCalibratedRed:0.480f green:0.480f blue:1.000f alpha:1.00f];
 }
 
 - (void)resetScene {
@@ -244,6 +128,98 @@ const uint32_t noCategory = 0x1 << 3;
 
 #pragma mark -
 #pragma mark Drawing actions
+
+- (void)renderSceneWithEvent:(NSEvent *)event {
+    NSImage *image = [Window croppedImageOfTopLevelWindow];
+    [ImageStructureAnalyser binaryArrayFromImage:image blockSize:self.blockSize completion:^(NSArray *imageArray) {
+        CGPoint location = [event locationInNode:self];
+        
+        [self setScenePhysics];
+        [self renderCloudSpriteAtPositionX:self.blockSize*4 y:self.frame.size.height/1.2];
+        [self renderCloudSpriteAtPositionX:self.frame.size.width/1.5 y:self.frame.size.height/1.5];
+        [self renderPlayerSpriteAtPositionX:location.x y:location.y + 230];
+        
+        int blocksWide = (int)imageArray.count;
+        int blocksHigh = (int)[(NSArray*)[imageArray objectAtIndex:0] count];
+        
+        for (int x = 0; x < blocksWide; x++) {
+            for (int y = 0; y < blocksHigh; y++) {
+                NSNumber *currentColor = imageArray[x][y];
+                
+                if ([currentColor isEqualToNumber:[NSNumber numberWithInt:1]]) {
+                    [self renderBlockSpriteAtPositionX:(x*self.blockSize) y:((blocksHigh * self.blockSize) - y*self.blockSize)];
+                }
+            }
+        }
+        
+        [self makeAppWindowOpaque];
+        self.backgroundColor = [NSColor colorWithCalibratedRed:0.480f green:0.480f blue:1.000f alpha:1.00f];
+    }];
+}
+
+- (void)renderHardcodedSceneWithEvent:(NSEvent *)event {
+    CGPoint location = [event locationInNode:self];
+    
+    [self setScenePhysics];
+    [self renderCloudSpriteAtPositionX:self.blockSize*4 y:self.frame.size.height/1.2];
+    [self renderCloudSpriteAtPositionX:self.frame.size.width/1.5 y:self.frame.size.height/1.5];
+    [self renderPlayerSpriteAtPositionX:location.x y:location.y + 230];
+    
+    int numBlocks = 20;
+    for (int i = 0; i < numBlocks; i++) {
+        [self renderBlockSpriteAtPositionX:location.x + ((i*self.blockSize)-((numBlocks/2)*self.blockSize)) y:location.y];
+    }
+    
+    for (int i = 0; i < numBlocks/2; i++) {
+        [self renderBlockSpriteAtPositionX:location.x + ((i*self.blockSize)-((numBlocks/2)*self.blockSize)) y:location.y + (self.blockSize*4)];
+    }
+    
+    [self makeAppWindowOpaque];
+    self.backgroundColor = [NSColor colorWithCalibratedRed:0.480f green:0.480f blue:1.000f alpha:1.00f];
+}
+
+- (void)renderCloudSpriteAtPositionX:(int)x y:(int)y {
+    SKSpriteNode *cloud = [SKSpriteNode spriteNodeWithImageNamed:@"cloud"];
+    cloud.size = CGSizeMake(self.blockSize*4, self.blockSize*3);
+    cloud.zPosition = 0;
+    cloud.position = CGPointMake(x, y);
+    [self addChild:cloud];
+}
+
+- (void)renderPlayerSpriteAtPositionX:(int)x y:(int)y {
+    _sprite = [SKSpriteNode spriteNodeWithImageNamed:@"player-standing-right"];
+    _sprite.size = CGSizeMake(self.blockSize, self.blockSize * 2);
+    _sprite.position = CGPointMake(x, y);
+    _sprite.scale = 1;
+    _sprite.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:CGSizeMake(_sprite.size.width, _sprite.size.height)];
+    _sprite.physicsBody.allowsRotation = NO;
+    _sprite.physicsBody.angularVelocity = 0.0f;
+    _sprite.physicsBody.angularDamping = 0.0f;
+    _sprite.physicsBody.dynamic = YES;
+    _sprite.physicsBody.categoryBitMask = playerCategory;
+    _sprite.physicsBody.contactTestBitMask = blockCategory;
+    _sprite.physicsBody.collisionBitMask = blockCategory;
+    
+    [self addChild:_sprite];
+}
+
+- (void)renderBlockSpriteAtPositionX:(int)x y:(int)y {
+    SKSpriteNode *block = [SKSpriteNode spriteNodeWithImageNamed:@"block"];
+    block.size = CGSizeMake(self.blockSize, self.blockSize);
+    block.position = CGPointMake(x,y);
+    block.scale = 1;
+    block.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:CGSizeMake(block.size.width, block.size.height)];
+    block.physicsBody.dynamic = NO;
+    block.physicsBody.allowsRotation = NO;
+    block.physicsBody.usesPreciseCollisionDetection = YES;
+    block.physicsBody.affectedByGravity = NO;
+    block.physicsBody.categoryBitMask = blockCategory;
+    block.physicsBody.contactTestBitMask = playerCategory;
+    block.physicsBody.collisionBitMask = playerCategory;
+    
+    [_blocks addObject:block];
+    [self addChild:block];
+}
 
 - (void)renderPlayerPosition {
     int xDelta = 0;
@@ -297,8 +273,6 @@ const uint32_t noCategory = 0x1 << 3;
     
     CGPoint desiredPosition = CGPointMake(_sprite.position.x + xDelta, _sprite.position.y + yDelta);
     _sprite.position = desiredPosition;
-    
-    //_sprite.physicsBody.velocity = CGVectorMake(_sprite.physicsBody.velocity.dx + xDelta,_sprite.physicsBody.velocity.dy + yDelta);
 }
 
 - (void)changeSpriteTexture:(NSString*)textureName {
@@ -359,6 +333,11 @@ const uint32_t noCategory = 0x1 << 3;
 
 #pragma mark -
 #pragma mark Physics actions
+
+- (void)setScenePhysics {
+    self.physicsWorld.gravity = CGVectorMake(0, -3);
+    self.physicsWorld.contactDelegate = self;
+}
 
 - (void)didBeginContact:(SKPhysicsContact *)contact {
     _isJumping = NO;
