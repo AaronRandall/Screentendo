@@ -141,19 +141,18 @@ const uint32_t noCategory = 0x1 << 3;
     [self makeAppWindowOpaque];
     
     [ImageStructureAnalyser blocksFromImage:image blockSize:self.blockSize blockCalculated:^(NSDictionary *imageBinaryBlock) {
-        NSLog(@"Received block at coordinates: %@", imageBinaryBlock);
         int x = [imageBinaryBlock[@"x"] intValue];
         int y = [imageBinaryBlock[@"y"] intValue];
         bool blockValue = [imageBinaryBlock[@"binaryValue"] boolValue];
-        
-        float alphaValue = (1.f/26)*(26-y);
-        
-        NSLog(@"********************");
-        NSLog(@"FloatValue: %f", alphaValue);
-        NSLog(@"FloatValue: %d", y);
-        NSLog(@"********************");
-        
-        croppedImageBackground.alpha = alphaValue;
+//
+//        float alphaValue = (1.f/26)*(26-y);
+//        
+//        NSLog(@"********************");
+//        NSLog(@"FloatValue: %f", alphaValue);
+//        NSLog(@"FloatValue: %d", y);
+//        NSLog(@"********************");
+//        
+//        croppedImageBackground.alpha = alphaValue;
         
         if (blockValue) {
             [self renderBlockSpriteAtPositionX:(x*self.blockSize) y:((self.view.frame.size.height + statusBarHeight) - y*self.blockSize)];
@@ -231,10 +230,10 @@ const uint32_t noCategory = 0x1 << 3;
 
 - (void)renderBlockSpriteAtPositionX:(int)x y:(int)y {
     SKSpriteNode *block = [SKSpriteNode spriteNodeWithImageNamed:@"block"];
-    block.size = CGSizeMake(self.blockSize, self.blockSize);
+    block.size = CGSizeMake(0, 0);
     block.position = CGPointMake(x,y);
     block.scale = 1;
-    block.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:CGSizeMake(block.size.width, block.size.height)];
+    block.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:CGSizeMake(self.blockSize, self.blockSize)];
     block.physicsBody.dynamic = NO;
     block.physicsBody.allowsRotation = NO;
     block.physicsBody.usesPreciseCollisionDetection = YES;
@@ -242,6 +241,9 @@ const uint32_t noCategory = 0x1 << 3;
     block.physicsBody.categoryBitMask = blockCategory;
     block.physicsBody.contactTestBitMask = playerCategory;
     block.physicsBody.collisionBitMask = playerCategory;
+    
+    SKAction *expand = [SKAction resizeToWidth:self.blockSize height:self.blockSize duration:0.5f];
+    [block runAction:expand];
     
     [_blocks addObject:block];
     [self addChild:block];
@@ -380,10 +382,6 @@ const uint32_t noCategory = 0x1 << 3;
         [playerBody applyImpulse:CGVectorMake(0.0f, -0.4f) atPoint:playerBody.node.position];
         
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            NSLog(@"Breaking block with data:");
-            NSLog(@"Player position x,y=%f,%f", playerBody.node.position.x, playerBody.node.position.y);
-            NSLog(@"Block position x,y=%f,%f", blockBody.node.position.x, blockBody.node.position.y);
-            NSLog(@"Contact position x,y=%f,%f", contact.contactPoint.x, contact.contactPoint.y);
             [self breakBlock:blockBody.node];
         });
     }
@@ -391,8 +389,6 @@ const uint32_t noCategory = 0x1 << 3;
 
 - (void)didSimulatePhysics {
     if (_sprite.physicsBody.velocity.dy > 350) {
-        NSLog(@"%f",_sprite.physicsBody.velocity.dy);
-        NSLog(@"Dampening");
         _sprite.physicsBody.velocity = CGVectorMake(_sprite.physicsBody.velocity.dx,200);
     }
 }

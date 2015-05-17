@@ -59,11 +59,8 @@
             
             [[imageArray objectAtIndex:x] setObject:avgColor atIndex:y];
             
-            //dispatch_async(dispatch_get_main_queue(), ^{
-                blockCalculated(@{@"x":[NSNumber numberWithInt:x], @"y":[NSNumber numberWithInt:y], @"binaryValue": avgColor});
-            //});
+            blockCalculated(@{@"x":[NSNumber numberWithInt:x], @"y":[NSNumber numberWithInt:y], @"binaryValue": avgColor});
         }
-        NSLog(@"PROGRESS (in thread): %d/%d", y, height);
     }
     
     completion(imageArray);
@@ -96,7 +93,6 @@
             
             [[imageArray objectAtIndex:x] setObject:avgColor atIndex:y];
         }
-        NSLog(@"PROGRESS: %d/%d", y, height);
     }
     
     return imageArray;
