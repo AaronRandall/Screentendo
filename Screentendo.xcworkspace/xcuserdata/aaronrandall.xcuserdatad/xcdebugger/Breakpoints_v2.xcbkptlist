@@ -202,11 +202,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Screentendo/GameScene.m"
-            timestampString = "453593428.43027"
+            timestampString = "453594818.000895"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "161"
-            endingLineNumber = "161"
+            startingLineNumber = "163"
+            endingLineNumber = "163"
             landmarkName = "-renderSceneWithEvent:"
             landmarkType = "5">
          </BreakpointContent>

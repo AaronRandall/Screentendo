@@ -156,6 +156,8 @@ const uint32_t noCategory = 0x1 << 3;
         
         if (blockValue) {
             [self renderBlockSpriteAtPositionX:(x*self.blockSize) y:((self.view.frame.size.height + statusBarHeight) - y*self.blockSize)];
+        } else {
+            [self renderBackgroundBlockSpriteAtPositionX:(x*self.blockSize) y:((self.view.frame.size.height + statusBarHeight) - y*self.blockSize)];
         }
     } completion:^(NSArray *imageBinaryArray) {
         CGPoint location = [event locationInNode:self];
@@ -169,15 +171,15 @@ const uint32_t noCategory = 0x1 << 3;
         //self.backgroundColor = [NSColor colorWithCalibratedRed:0.480f green:0.480f blue:1.000f alpha:1.00f];
         
         // Fade in the blue background
-            NSColor *transparentColor = [NSColor colorWithCalibratedRed:0.0f green:0.0f blue:0.0f alpha:0.00f];
-            NSColor *blueColor = [NSColor colorWithCalibratedRed:0.480f green:0.480f blue:1.000f alpha:1.00f];
-        
-            SKSpriteNode *bg = [SKSpriteNode spriteNodeWithColor:transparentColor size:self.size];
-            bg.position = CGPointMake(bg.size.width/2, bg.size.height/2);
-            [self addChild:bg];
-            //SKAction *color1 = [SKAction colorizeWithColor:transparentColor colorBlendFactor:1 duration:4];
-            SKAction *color2 = [SKAction colorizeWithColor:blueColor colorBlendFactor:0 duration:0.4f];
-            [bg runAction:[SKAction repeatAction:[SKAction sequence:@[color2]] count:1]];
+//            NSColor *transparentColor = [NSColor colorWithCalibratedRed:0.0f green:0.0f blue:0.0f alpha:0.00f];
+//            NSColor *blueColor = [NSColor colorWithCalibratedRed:0.480f green:0.480f blue:1.000f alpha:1.00f];
+//        
+//            SKSpriteNode *bg = [SKSpriteNode spriteNodeWithColor:transparentColor size:self.size];
+//            bg.position = CGPointMake(bg.size.width/2, bg.size.height/2);
+//            [self addChild:bg];
+//            //SKAction *color1 = [SKAction colorizeWithColor:transparentColor colorBlendFactor:1 duration:4];
+//            SKAction *color2 = [SKAction colorizeWithColor:blueColor colorBlendFactor:0 duration:0.4f];
+//            [bg runAction:[SKAction repeatAction:[SKAction sequence:@[color2]] count:1]];
         
     }];
 }
@@ -247,6 +249,23 @@ const uint32_t noCategory = 0x1 << 3;
     [block runAction:expand];
     
     [_blocks addObject:block];
+    [self addChild:block];
+}
+
+- (void)renderBackgroundBlockSpriteAtPositionX:(int)x y:(int)y {
+    SKSpriteNode *block = [SKSpriteNode spriteNodeWithImageNamed:@"background-block"];
+    block.size = CGSizeMake(0, 0);
+    block.position = CGPointMake(x,y);
+    block.scale = 1;
+    block.physicsBody.dynamic = NO;
+    block.physicsBody.allowsRotation = NO;
+    block.physicsBody.usesPreciseCollisionDetection = NO;
+    block.physicsBody.affectedByGravity = NO;
+
+    SKAction *expand = [SKAction resizeToWidth:self.blockSize height:self.blockSize duration:0.5f];
+    expand.timingMode = SKActionTimingEaseOut;
+    [block runAction:expand];
+    
     [self addChild:block];
 }
 
