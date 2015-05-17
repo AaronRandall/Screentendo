@@ -38,6 +38,7 @@ const float transparentAlphaValue = 0.4f;
     _scene.scaleMode = SKSceneScaleModeResizeFill;
     
     self.skView.ignoresSiblingOrder = YES;
+    self.skView.showsFPS = YES;
     self.window.delegate = self;
     
     [self.skView presentScene:_scene];

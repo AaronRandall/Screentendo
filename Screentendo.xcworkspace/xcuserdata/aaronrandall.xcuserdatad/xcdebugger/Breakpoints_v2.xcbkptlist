@@ -202,11 +202,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Screentendo/GameScene.m"
-            timestampString = "453587571.805137"
+            timestampString = "453589027.589417"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "153"
-            endingLineNumber = "153"
+            startingLineNumber = "162"
+            endingLineNumber = "162"
             landmarkName = "-renderSceneWithEvent:"
             landmarkType = "5">
          </BreakpointContent>
@@ -217,46 +217,14 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Screentendo/GameScene.m"
-            timestampString = "453587874.722663"
+            filePath = "../screentendo/Screentendo/GameScene.m"
+            timestampString = "453588996.995384"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "143"
-            endingLineNumber = "143"
+            startingLineNumber = "156"
+            endingLineNumber = "156"
             landmarkName = "-renderSceneWithEvent:"
             landmarkType = "5">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "-[GameScene renderSceneWithEvent:]"
-                  moduleName = "Screentendo"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/aaronrandall/projects/Screentendo/Screentendo/GameScene.m"
-                  timestampString = "453586916.309665"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "140"
-                  endingLineNumber = "140"
-                  offsetFromSymbolStart = "920">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "__34-[GameScene renderSceneWithEvent:]_block_invoke"
-                  moduleName = "Screentendo"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/aaronrandall/projects/Screentendo/Screentendo/GameScene.m"
-                  timestampString = "453586916.309987"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "140"
-                  endingLineNumber = "140"
-                  offsetFromSymbolStart = "46">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
