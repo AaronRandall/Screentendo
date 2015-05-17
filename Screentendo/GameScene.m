@@ -166,20 +166,20 @@ const uint32_t noCategory = 0x1 << 3;
         [self renderPlayerSpriteAtPositionX:location.x y:location.y + 230];
         
         [croppedImageBackground removeFromParent];
-        self.backgroundColor = [NSColor colorWithCalibratedRed:0.480f green:0.480f blue:1.000f alpha:1.00f];
+        //self.backgroundColor = [NSColor colorWithCalibratedRed:0.480f green:0.480f blue:1.000f alpha:1.00f];
+        
+        // Fade in the blue background
+            NSColor *transparentColor = [NSColor colorWithCalibratedRed:0.0f green:0.0f blue:0.0f alpha:0.00f];
+            NSColor *blueColor = [NSColor colorWithCalibratedRed:0.480f green:0.480f blue:1.000f alpha:1.00f];
+        
+            SKSpriteNode *bg = [SKSpriteNode spriteNodeWithColor:transparentColor size:self.size];
+            bg.position = CGPointMake(bg.size.width/2, bg.size.height/2);
+            [self addChild:bg];
+            //SKAction *color1 = [SKAction colorizeWithColor:transparentColor colorBlendFactor:1 duration:4];
+            SKAction *color2 = [SKAction colorizeWithColor:blueColor colorBlendFactor:0 duration:0.4f];
+            [bg runAction:[SKAction repeatAction:[SKAction sequence:@[color2]] count:1]];
+        
     }];
-    
-    // Fade in the blue background
-//    NSColor *transparentColor = [NSColor colorWithCalibratedRed:0.0f green:0.0f blue:0.0f alpha:0.00f];
-//    NSColor *blueColor = [NSColor colorWithCalibratedRed:0.480f green:0.480f blue:1.000f alpha:1.00f];
-//    
-//    SKSpriteNode *bg = [SKSpriteNode spriteNodeWithColor:transparentColor size:self.size];
-//    bg.position = CGPointMake(bg.size.width/2, bg.size.height/2);
-//    [self addChild:bg];
-//    //SKAction *color1 = [SKAction colorizeWithColor:transparentColor colorBlendFactor:1 duration:4];
-//    SKAction *color2 = [SKAction colorizeWithColor:blueColor colorBlendFactor:1 duration:1];
-//    [bg runAction:[SKAction repeatAction:[SKAction sequence:@[color2]] count:1]];
-//
 }
 
 - (void)renderHardcodedSceneWithEvent:(NSEvent *)event {
@@ -243,6 +243,7 @@ const uint32_t noCategory = 0x1 << 3;
     block.physicsBody.collisionBitMask = playerCategory;
     
     SKAction *expand = [SKAction resizeToWidth:self.blockSize height:self.blockSize duration:0.5f];
+    expand.timingMode = SKActionTimingEaseOut;
     [block runAction:expand];
     
     [_blocks addObject:block];
