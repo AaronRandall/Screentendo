@@ -130,8 +130,26 @@ const uint32_t noCategory = 0x1 << 3;
 #pragma mark Drawing actions
 
 - (void)renderSceneWithEvent:(NSEvent *)event {
+    int statusBarHeight = 22;
     NSImage *image = [Window croppedImageOfTopLevelWindow];
-    [ImageStructureAnalyser binaryArrayFromImage:image blockSize:self.blockSize completion:^(NSArray *imageArray) {
+    
+    SKTexture *backgroundTexture = [SKTexture textureWithImage:image];
+    
+    SKSpriteNode *background = [SKSpriteNode spriteNodeWithTexture:backgroundTexture size:CGSizeMake(self.view.frame.size.width, self.view.frame.size.height + statusBarHeight)];
+    background.position = (CGPoint) {CGRectGetMidX(self.view.frame), CGRectGetMidY(self.view.frame) + (statusBarHeight/2)};
+    [self addChild:background];
+    [self makeAppWindowOpaque];
+    
+    [ImageStructureAnalyser blocksFromImage:image blockSize:self.blockSize blockCalculated:^(NSDictionary *imageBinaryBlock) {
+        NSLog(@"Received block at coordinates: %@", imageBinaryBlock);
+        int x = [imageBinaryBlock[@"x"] intValue];
+        int y = [imageBinaryBlock[@"y"] intValue];
+        bool blockValue = [imageBinaryBlock[@"binaryValue"] boolValue];
+        
+        if (blockValue) {
+            [self renderBlockSpriteAtPositionX:(x*self.blockSize) y:((self.view.frame.size.height + statusBarHeight) - y*self.blockSize)];
+        }
+    } completion:^(NSArray *imageBinaryArray) {
         CGPoint location = [event locationInNode:self];
         
         [self setScenePhysics];
@@ -139,22 +157,46 @@ const uint32_t noCategory = 0x1 << 3;
         [self renderCloudSpriteAtPositionX:self.frame.size.width/1.5 y:self.frame.size.height/1.5];
         [self renderPlayerSpriteAtPositionX:location.x y:location.y + 230];
         
-        int blocksWide = (int)imageArray.count;
-        int blocksHigh = (int)[(NSArray*)[imageArray objectAtIndex:0] count];
-        
-        for (int x = 0; x < blocksWide; x++) {
-            for (int y = 0; y < blocksHigh; y++) {
-                NSNumber *currentColor = imageArray[x][y];
-                
-                if ([currentColor isEqualToNumber:[NSNumber numberWithInt:1]]) {
-                    [self renderBlockSpriteAtPositionX:(x*self.blockSize) y:((blocksHigh * self.blockSize) - y*self.blockSize)];
-                }
-            }
-        }
-        
-        [self makeAppWindowOpaque];
+        [background removeFromParent];
         self.backgroundColor = [NSColor colorWithCalibratedRed:0.480f green:0.480f blue:1.000f alpha:1.00f];
     }];
+    
+//    [ImageStructureAnalyser binaryArrayFromImage:image blockSize:self.blockSize completion:^(NSArray *imageArray) {
+//        CGPoint location = [event locationInNode:self];
+//        
+//        [self setScenePhysics];
+//        [self renderCloudSpriteAtPositionX:self.blockSize*4 y:self.frame.size.height/1.2];
+//        [self renderCloudSpriteAtPositionX:self.frame.size.width/1.5 y:self.frame.size.height/1.5];
+//        [self renderPlayerSpriteAtPositionX:location.x y:location.y + 230];
+//        
+//        int blocksWide = (int)imageArray.count;
+//        int blocksHigh = (int)[(NSArray*)[imageArray objectAtIndex:0] count];
+//        
+//        for (int x = 0; x < blocksWide; x++) {
+//            for (int y = 0; y < blocksHigh; y++) {
+//                NSNumber *currentColor = imageArray[x][y];
+//                
+//                if ([currentColor isEqualToNumber:[NSNumber numberWithInt:1]]) {
+//                    [self renderBlockSpriteAtPositionX:(x*self.blockSize) y:((blocksHigh * self.blockSize) - y*self.blockSize)];
+//                }
+//            }
+//        }
+//        
+//        [self makeAppWindowOpaque];
+//        self.backgroundColor = [NSColor colorWithCalibratedRed:0.480f green:0.480f blue:1.000f alpha:1.00f];
+//    }];
+    
+    // Fade in the blue background
+//    NSColor *transparentColor = [NSColor colorWithCalibratedRed:0.0f green:0.0f blue:0.0f alpha:0.00f];
+//    NSColor *blueColor = [NSColor colorWithCalibratedRed:0.480f green:0.480f blue:1.000f alpha:1.00f];
+//    
+//    SKSpriteNode *bg = [SKSpriteNode spriteNodeWithColor:transparentColor size:self.size];
+//    bg.position = CGPointMake(bg.size.width/2, bg.size.height/2);
+//    [self addChild:bg];
+//    //SKAction *color1 = [SKAction colorizeWithColor:transparentColor colorBlendFactor:1 duration:4];
+//    SKAction *color2 = [SKAction colorizeWithColor:blueColor colorBlendFactor:1 duration:1];
+//    [bg runAction:[SKAction repeatAction:[SKAction sequence:@[color2]] count:1]];
+//
 }
 
 - (void)renderHardcodedSceneWithEvent:(NSEvent *)event {

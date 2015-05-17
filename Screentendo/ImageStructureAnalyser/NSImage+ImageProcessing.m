@@ -29,6 +29,46 @@
     return image;
 }
 
+- (void)toBinaryArrayWithBlockSize:(int)blockSize
+                   blockCalculated:(void (^)(NSDictionary *))blockCalculated
+                        completion:(void (^)(NSArray *))completion
+{
+    NSMutableArray *images = [self splitImageIntoBlocks:self withBlockSize:blockSize];
+    
+    int width = (int)self.size.width/blockSize;
+    int height = (int)self.size.height/blockSize;
+    
+    NSMutableArray *imageArray = [NSMutableArray arrayOfWidth:width andHeight:height];
+    
+    // Calculate the average color of the blocks
+    int counter = 0;
+    for (int y = 0; y < height; y++) {
+        for (int x = 0; x < width; x++) {
+            NSImage *theImage = images[counter];
+            counter = counter + 1;
+            
+            NSColor *averageColor = [self averageColor:theImage];
+            NSNumber *avgColor = [NSNumber numberWithInt:0];
+            
+            if (averageColor.redComponent > 0.7) {
+                // Mostly white image, no need to change value
+            } else {
+                // Mostly black image
+                avgColor = [NSNumber numberWithInt:1];
+            }
+            
+            [[imageArray objectAtIndex:x] setObject:avgColor atIndex:y];
+            
+            //dispatch_async(dispatch_get_main_queue(), ^{
+                blockCalculated(@{@"x":[NSNumber numberWithInt:x], @"y":[NSNumber numberWithInt:y], @"binaryValue": avgColor});
+            //});
+        }
+        NSLog(@"PROGRESS (in thread): %d/%d", y, height);
+    }
+    
+    completion(imageArray);
+}
+
 - (NSMutableArray*)toBinaryArrayWithBlockSize:(int)blockSize {
     NSMutableArray *images = [self splitImageIntoBlocks:self withBlockSize:blockSize];
     
@@ -56,6 +96,7 @@
             
             [[imageArray objectAtIndex:x] setObject:avgColor atIndex:y];
         }
+        NSLog(@"PROGRESS: %d/%d", y, height);
     }
     
     return imageArray;
