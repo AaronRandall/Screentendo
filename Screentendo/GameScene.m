@@ -25,6 +25,8 @@ typedef NS_ENUM(NSInteger, Direction) {
 @implementation GameScene {
     SKSpriteNode *_sprite;
     NSMutableArray *_blocks;
+    SKSpriteNode *_background;
+    
     BOOL _isJumping;
     BOOL _isFacingLeft;
     
@@ -38,6 +40,7 @@ typedef NS_ENUM(NSInteger, Direction) {
 }
 
 const int defaultBlockSize = 10;
+const int statusBarHeight = 22;
 const bool hardcodeBlocks = NO;
 
 const uint32_t playerCategory = 0x1 << 0;
@@ -130,34 +133,25 @@ const uint32_t noCategory = 0x1 << 3;
 #pragma mark Drawing actions
 
 - (void)renderSceneWithEvent:(NSEvent *)event {
-    int statusBarHeight = 22;
+    bool renderBackgroundAsBlocks = NO;
+    bool fadeBackground = YES;
+    
     NSImage *image = [Window croppedImageOfTopLevelWindow];
     
-    // Set the cropped image as the scene's background
-    SKTexture *backgroundTexture = [SKTexture textureWithImage:image];
-    SKSpriteNode *croppedImageBackground = [SKSpriteNode spriteNodeWithTexture:backgroundTexture size:CGSizeMake(self.view.frame.size.width, self.view.frame.size.height + statusBarHeight)];
-    croppedImageBackground.position = (CGPoint) {CGRectGetMidX(self.view.frame), CGRectGetMidY(self.view.frame) + (statusBarHeight/2)};
-    [self addChild:croppedImageBackground];
+    [self renderBackgroundWithImage:image];
     [self makeAppWindowOpaque];
     
     [ImageStructureAnalyser blocksFromImage:image blockSize:self.blockSize blockCalculated:^(NSDictionary *imageBinaryBlock) {
         int x = [imageBinaryBlock[@"x"] intValue];
         int y = [imageBinaryBlock[@"y"] intValue];
         bool blockValue = [imageBinaryBlock[@"binaryValue"] boolValue];
-//
-//        float alphaValue = (1.f/26)*(26-y);
-//        
-//        NSLog(@"********************");
-//        NSLog(@"FloatValue: %f", alphaValue);
-//        NSLog(@"FloatValue: %d", y);
-//        NSLog(@"********************");
-//        
-//        croppedImageBackground.alpha = alphaValue;
         
         if (blockValue) {
             [self renderBlockSpriteAtPositionX:(x*self.blockSize) y:((self.view.frame.size.height + statusBarHeight) - y*self.blockSize)];
         } else {
-            //[self renderBackgroundBlockSpriteAtPositionX:(x*self.blockSize) y:((self.view.frame.size.height + statusBarHeight) - y*self.blockSize)];
+            if (renderBackgroundAsBlocks) {
+                [self renderBackgroundBlockSpriteAtPositionX:(x*self.blockSize) y:((self.view.frame.size.height + statusBarHeight) - y*self.blockSize)];
+            }
         }
     } completion:^(NSArray *imageBinaryArray) {
         CGPoint location = [event locationInNode:self];
@@ -167,20 +161,20 @@ const uint32_t noCategory = 0x1 << 3;
         [self renderCloudSpriteAtPositionX:self.frame.size.width/1.5 y:self.frame.size.height/1.5];
         [self renderPlayerSpriteAtPositionX:location.x y:location.y + 230];
         
-        [croppedImageBackground removeFromParent];
-        //self.backgroundColor = [NSColor colorWithCalibratedRed:0.480f green:0.480f blue:1.000f alpha:1.00f];
+        [_background removeFromParent];
         
-        // Fade in the blue background
+        if (fadeBackground) {
             NSColor *transparentColor = [NSColor colorWithCalibratedRed:0.0f green:0.0f blue:0.0f alpha:0.00f];
             NSColor *blueColor = [NSColor colorWithCalibratedRed:0.480f green:0.480f blue:1.000f alpha:1.00f];
-        
+            
             SKSpriteNode *bg = [SKSpriteNode spriteNodeWithColor:transparentColor size:self.size];
             bg.position = CGPointMake(bg.size.width/2, bg.size.height/2);
             [self addChild:bg];
-            //SKAction *color1 = [SKAction colorizeWithColor:transparentColor colorBlendFactor:1 duration:4];
-            SKAction *color2 = [SKAction colorizeWithColor:blueColor colorBlendFactor:0 duration:0.4f];
-            [bg runAction:[SKAction repeatAction:[SKAction sequence:@[color2]] count:1]];
-        
+            SKAction *color = [SKAction colorizeWithColor:blueColor colorBlendFactor:0 duration:0.4f];
+            [bg runAction:[SKAction repeatAction:[SKAction sequence:@[color]] count:1]];
+        } else {
+            self.backgroundColor = [NSColor colorWithCalibratedRed:0.480f green:0.480f blue:1.000f alpha:1.00f];
+        }
     }];
 }
 
@@ -203,6 +197,13 @@ const uint32_t noCategory = 0x1 << 3;
     
     [self makeAppWindowOpaque];
     self.backgroundColor = [NSColor colorWithCalibratedRed:0.480f green:0.480f blue:1.000f alpha:1.00f];
+}
+
+- (void)renderBackgroundWithImage:(NSImage*)image {
+    SKTexture *backgroundTexture = [SKTexture textureWithImage:image];
+    _background = [SKSpriteNode spriteNodeWithTexture:backgroundTexture size:CGSizeMake(self.view.frame.size.width, self.view.frame.size.height + statusBarHeight)];
+    _background.position = (CGPoint) {CGRectGetMidX(self.view.frame), CGRectGetMidY(self.view.frame) + (statusBarHeight/2)};
+    [self addChild:_background];
 }
 
 - (void)renderCloudSpriteAtPositionX:(int)x y:(int)y {
@@ -266,7 +267,7 @@ const uint32_t noCategory = 0x1 << 3;
     block.physicsBody.allowsRotation = NO;
     block.physicsBody.usesPreciseCollisionDetection = NO;
     block.physicsBody.affectedByGravity = NO;
-
+    
     SKAction *expand = [SKAction resizeToWidth:self.blockSize height:self.blockSize duration:0.5f];
     expand.timingMode = SKActionTimingEaseOut;
     [block runAction:expand];
