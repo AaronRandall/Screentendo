@@ -85,8 +85,7 @@
         } else {
             NSLog(@"");
             if (window.name.length > 0 &&
-                ![window.ownerName isEqualToString:@"Xcode"] &&
-                ![window.ownerName isEqualToString:@"MagicGraphDebugWindow"]) {
+                ![window.ownerName isEqualToString:@"Xcode"]) {
                 if (indexCounter == index) {
                     return window;
                 }
@@ -112,16 +111,16 @@
 }
 
 + (NSImage*)croppedImageOfTopLevelWindow {
-    Window *graphMagicWindow = [Window getWindowAtLayer:0 andIndex:0];
+    Window *screentendoWindow = [Window getWindowAtLayer:0 andIndex:0];
     Window *topLevelWindow   = [Window getWindowAtLayer:0 andIndex:1];
     
     NSImage *screenimage = [topLevelWindow takeScreenshot];
   //  [self saveImage:screenimage filename:@"1_screenshot.png"];
     
-    // Crop the top-level window relative to the graph magic window
-    float xDiff = abs(topLevelWindow.bounds.origin.x - graphMagicWindow.bounds.origin.x);
-    float yDiff = abs(topLevelWindow.bounds.origin.y - graphMagicWindow.bounds.origin.y);
-    CGRect rect = CGRectMake(xDiff, yDiff, graphMagicWindow.bounds.size.width, graphMagicWindow.bounds.size.height);
+    // Crop the top-level window relative to the screentendo window
+    float xDiff = abs(topLevelWindow.bounds.origin.x - screentendoWindow.bounds.origin.x);
+    float yDiff = abs(topLevelWindow.bounds.origin.y - screentendoWindow.bounds.origin.y);
+    CGRect rect = CGRectMake(xDiff, yDiff, screentendoWindow.bounds.size.width, screentendoWindow.bounds.size.height);
     CGImageRef cImage = CGImageCreateWithImageInRect([self nsImageToCGImageRef:screenimage], rect);
     
     NSImage *image = [[NSImage alloc] initWithCGImage:cImage size:rect.size];

@@ -6,7 +6,6 @@
 //  Copyright (c) 2015 Aaron Randall. All rights reserved.
 //
 
-
 #import "GameScene.h"
 #import "ImageStructureAnalyser.h"
 #import "AppDelegate.h"
@@ -15,6 +14,23 @@
 @interface GameScene() <SKPhysicsContactDelegate>
 @end
 
+@implementation GameScene {
+    SKSpriteNode *_sprite;
+    NSMutableArray *_blocks;
+    SKSpriteNode *_background;
+
+    BOOL _isJumping;
+    BOOL _isFacingLeft;
+
+    BOOL _leftPressed;
+    BOOL _rightPressed;
+    BOOL _upPressed;
+    BOOL _downPressed;
+
+    int _frameCount;
+    int _animationTicker;
+}
+
 typedef NS_ENUM(NSInteger, Direction) {
     Left  = 123,
     Right = 124,
@@ -22,25 +38,10 @@ typedef NS_ENUM(NSInteger, Direction) {
     Down  = 125
 };
 
-@implementation GameScene {
-    SKSpriteNode *_sprite;
-    NSMutableArray *_blocks;
-    SKSpriteNode *_background;
-    
-    BOOL _isJumping;
-    BOOL _isFacingLeft;
-    
-    BOOL _leftPressed;
-    BOOL _rightPressed;
-    BOOL _upPressed;
-    BOOL _downPressed;
-    
-    int _frameCount;
-    int _animationTicker;
-}
-
 const int defaultBlockSize = 10;
 const int statusBarHeight = 22;
+const int physicsVelocityDampenerThreshold = 350;
+const int physicsVelocityDampener = 200;
 const bool hardcodeBlocks = NO;
 
 const uint32_t playerCategory = 0x1 << 0;
@@ -52,7 +53,7 @@ const uint32_t noCategory = 0x1 << 3;
     if (!_blockSize) {
         _blockSize = defaultBlockSize;
     }
-    
+
     return _blockSize;
 }
 
@@ -100,17 +101,12 @@ const uint32_t noCategory = 0x1 << 3;
 - (void)mouseDown:(NSEvent *)event {
     [self resetScene];
     [self makeAppWindowTransparent];
-    
+
     if (hardcodeBlocks) {
         [self renderHardcodedSceneWithEvent:event];
     } else {
         [self renderSceneWithEvent:event];
     }
-}
-
-- (void)resetScene {
-    [self removeAllChildren];
-    [_blocks removeAllObjects];
 }
 
 #pragma mark -
@@ -135,17 +131,17 @@ const uint32_t noCategory = 0x1 << 3;
 - (void)renderSceneWithEvent:(NSEvent *)event {
     bool renderBackgroundAsBlocks = NO;
     bool fadeBackground = YES;
-    
+
     NSImage *image = [Window croppedImageOfTopLevelWindow];
-    
+
     [self renderBackgroundWithImage:image];
     [self makeAppWindowOpaque];
-    
+
     [ImageStructureAnalyser blocksFromImage:image blockSize:self.blockSize blockCalculated:^(NSDictionary *imageBinaryBlock) {
         int x = [imageBinaryBlock[@"x"] intValue];
         int y = [imageBinaryBlock[@"y"] intValue];
         bool blockValue = [imageBinaryBlock[@"binaryValue"] boolValue];
-        
+
         if (blockValue) {
             [self renderBlockSpriteAtPositionX:(x*self.blockSize) y:((self.view.frame.size.height + statusBarHeight) - y*self.blockSize)];
         } else {
@@ -155,18 +151,18 @@ const uint32_t noCategory = 0x1 << 3;
         }
     } completion:^(NSArray *imageBinaryArray) {
         CGPoint location = [event locationInNode:self];
-        
+
         [self setScenePhysics];
         [self renderCloudSpriteAtPositionX:self.blockSize*4 y:self.frame.size.height/1.2];
         [self renderCloudSpriteAtPositionX:self.frame.size.width/1.5 y:self.frame.size.height/1.5];
         [self renderPlayerSpriteAtPositionX:location.x y:location.y + 230];
-        
+
         [_background removeFromParent];
-        
+
         if (fadeBackground) {
             NSColor *transparentColor = [NSColor colorWithCalibratedRed:0.0f green:0.0f blue:0.0f alpha:0.00f];
             NSColor *blueColor = [NSColor colorWithCalibratedRed:0.480f green:0.480f blue:1.000f alpha:1.00f];
-            
+
             SKSpriteNode *bg = [SKSpriteNode spriteNodeWithColor:transparentColor size:self.size];
             bg.position = CGPointMake(bg.size.width/2, bg.size.height/2);
             [self addChild:bg];
@@ -180,21 +176,21 @@ const uint32_t noCategory = 0x1 << 3;
 
 - (void)renderHardcodedSceneWithEvent:(NSEvent *)event {
     CGPoint location = [event locationInNode:self];
-    
+
     [self setScenePhysics];
     [self renderCloudSpriteAtPositionX:self.blockSize*4 y:self.frame.size.height/1.2];
     [self renderCloudSpriteAtPositionX:self.frame.size.width/1.5 y:self.frame.size.height/1.5];
     [self renderPlayerSpriteAtPositionX:location.x y:location.y + 230];
-    
+
     int numBlocks = 20;
     for (int i = 0; i < numBlocks; i++) {
         [self renderBlockSpriteAtPositionX:location.x + ((i*self.blockSize)-((numBlocks/2)*self.blockSize)) y:location.y];
     }
-    
+
     for (int i = 0; i < numBlocks/2; i++) {
         [self renderBlockSpriteAtPositionX:location.x + ((i*self.blockSize)-((numBlocks/2)*self.blockSize)) y:location.y + (self.blockSize*4)];
     }
-    
+
     [self makeAppWindowOpaque];
     self.backgroundColor = [NSColor colorWithCalibratedRed:0.480f green:0.480f blue:1.000f alpha:1.00f];
 }
@@ -211,11 +207,11 @@ const uint32_t noCategory = 0x1 << 3;
     cloud.size = CGSizeMake(0, 0);
     cloud.zPosition = 0;
     cloud.position = CGPointMake(x, y);
-    
+
     SKAction *expand = [SKAction resizeToWidth:self.blockSize*4 height:self.blockSize*3 duration:2.0f];
     expand.timingMode = SKActionTimingEaseOut;
     [cloud runAction:expand];
-    
+
     [self addChild:cloud];
 }
 
@@ -232,7 +228,7 @@ const uint32_t noCategory = 0x1 << 3;
     _sprite.physicsBody.categoryBitMask = playerCategory;
     _sprite.physicsBody.contactTestBitMask = blockCategory;
     _sprite.physicsBody.collisionBitMask = blockCategory;
-    
+
     [self addChild:_sprite];
 }
 
@@ -249,11 +245,11 @@ const uint32_t noCategory = 0x1 << 3;
     block.physicsBody.categoryBitMask = blockCategory;
     block.physicsBody.contactTestBitMask = playerCategory;
     block.physicsBody.collisionBitMask = playerCategory;
-    
+
     SKAction *expand = [SKAction resizeToWidth:self.blockSize height:self.blockSize duration:0.5f];
     expand.timingMode = SKActionTimingEaseOut;
     [block runAction:expand];
-    
+
     [_blocks addObject:block];
     [self addChild:block];
 }
@@ -267,20 +263,20 @@ const uint32_t noCategory = 0x1 << 3;
     block.physicsBody.allowsRotation = NO;
     block.physicsBody.usesPreciseCollisionDetection = NO;
     block.physicsBody.affectedByGravity = NO;
-    
+
     SKAction *expand = [SKAction resizeToWidth:self.blockSize height:self.blockSize duration:0.5f];
     expand.timingMode = SKActionTimingEaseOut;
     [block runAction:expand];
-    
+
     [self addChild:block];
 }
 
 - (void)renderPlayerPosition {
     int xDelta = 0;
     int yDelta = 0;
-    
+
     int deltaChange = 1.7;
-    
+
     NSDictionary* physicsRatios = @{[NSNumber numberWithInt:14]: @4.3f,
                                     [NSNumber numberWithInt:12]: @3.0f,
                                     [NSNumber numberWithInt:10]: @1.8f,
@@ -288,7 +284,7 @@ const uint32_t noCategory = 0x1 << 3;
                                     [NSNumber numberWithInt:6]: @0.5f,
                                     };
     float jumpImpulse = [physicsRatios[[NSNumber numberWithInt:self.blockSize]] floatValue];
-    
+
     if (_upPressed) {
         if (!_isJumping) {
             _isJumping = YES;
@@ -302,7 +298,7 @@ const uint32_t noCategory = 0x1 << 3;
     } else if (_downPressed) {
         yDelta = -deltaChange;
     }
-    
+
     if (_rightPressed) {
         _isFacingLeft = NO;
         if (!_isJumping) {
@@ -316,7 +312,7 @@ const uint32_t noCategory = 0x1 << 3;
         }
         xDelta = -deltaChange;
     }
-    
+
     if (!_upPressed && !_downPressed && !_rightPressed && !_leftPressed) {
         if (_isFacingLeft) {
             [self changeSpriteTexture:@"player-standing-left"];
@@ -324,7 +320,7 @@ const uint32_t noCategory = 0x1 << 3;
             [self changeSpriteTexture:@"player-standing-right"];
         }
     }
-    
+
     CGPoint desiredPosition = CGPointMake(_sprite.position.x + xDelta, _sprite.position.y + yDelta);
     _sprite.position = desiredPosition;
 }
@@ -340,7 +336,7 @@ const uint32_t noCategory = 0x1 << 3;
     blockDebris.size = CGSizeMake(self.blockSize/2, self.blockSize/2);
     blockDebris.position = block.position;
     blockDebris.scale = 1;
-    
+
     blockDebris.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:blockDebris.size];
     blockDebris.physicsBody.dynamic = YES;
     blockDebris.physicsBody.allowsRotation = YES;
@@ -350,17 +346,17 @@ const uint32_t noCategory = 0x1 << 3;
     blockDebris.physicsBody.categoryBitMask = blockDebrisCategory;
     blockDebris.physicsBody.contactTestBitMask = noCategory;
     blockDebris.physicsBody.collisionBitMask = noCategory;
-    
+
     SKSpriteNode *debris1 = blockDebris.copy;
     SKSpriteNode *debris2 = blockDebris.copy;
     SKSpriteNode *debris3 = blockDebris.copy;
     SKSpriteNode *debris4 = blockDebris.copy;
-    
+
     [self addChild:debris1];
     [self addChild:debris2];
     [self addChild:debris3];
     [self addChild:debris4];
-    
+
     [debris1.physicsBody applyImpulse:CGVectorMake(0.05f, 0.2f) atPoint:blockDebris.position];
     [debris2.physicsBody applyImpulse:CGVectorMake(-0.05f, 0.2f) atPoint:blockDebris.position];
     [debris3.physicsBody applyImpulse:CGVectorMake(0.05f, 0.1f) atPoint:blockDebris.position];
@@ -368,20 +364,25 @@ const uint32_t noCategory = 0x1 << 3;
     [block removeFromParent];
 }
 
+- (void)resetScene {
+    [self removeAllChildren];
+    [_blocks removeAllObjects];
+}
+
 - (void)update:(CFTimeInterval)currentTime {
     _frameCount++;
-    
+
     if (_frameCount == INT_MAX) {
         _frameCount = 0;
     }
-    
+
     if ((_frameCount % 4) == 0) {
         _animationTicker++;
         if (_animationTicker > 3) {
             _animationTicker = 1;
         }
     }
-    
+
     [self renderPlayerPosition];
 }
 
@@ -395,18 +396,18 @@ const uint32_t noCategory = 0x1 << 3;
 
 - (void)didBeginContact:(SKPhysicsContact *)contact {
     _isJumping = NO;
-    
+
     SKPhysicsBody *playerBody = contact.bodyA;
     SKPhysicsBody *blockBody  = contact.bodyB;
-    
+
     if (contact.bodyB.node.physicsBody.categoryBitMask == playerCategory) {
         playerBody = contact.bodyB;
         blockBody = contact.bodyA;
     }
-    
+
     if ((playerBody.node.position.y < contact.contactPoint.y) && (blockBody.node.position.y > contact.contactPoint.y)) {
         [playerBody applyImpulse:CGVectorMake(0.0f, -0.4f) atPoint:playerBody.node.position];
-        
+
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [self breakBlock:blockBody.node];
         });
@@ -414,8 +415,8 @@ const uint32_t noCategory = 0x1 << 3;
 }
 
 - (void)didSimulatePhysics {
-    if (_sprite.physicsBody.velocity.dy > 350) {
-        _sprite.physicsBody.velocity = CGVectorMake(_sprite.physicsBody.velocity.dx,200);
+    if (_sprite.physicsBody.velocity.dy > physicsVelocityDampenerThreshold) {
+        _sprite.physicsBody.velocity = CGVectorMake(_sprite.physicsBody.velocity.dx, physicsVelocityDampener);
     }
 }
 

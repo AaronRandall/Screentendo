@@ -10,10 +10,6 @@
 
 @interface ImageStructureAnalyser : NSObject
 
-+ (void)binaryArrayFromImage:(NSImage*)image
-                   blockSize:(int)blockSize
-                  completion:(void (^)(NSArray *imageBinaryArray))completion;
-
 + (void)blocksFromImage:(NSImage*)image
               blockSize:(int)blockSize
         blockCalculated:(void (^)(NSDictionary *imageBinaryBlock))blockCalculated

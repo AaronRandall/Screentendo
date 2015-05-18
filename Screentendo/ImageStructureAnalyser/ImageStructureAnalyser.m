@@ -11,19 +11,6 @@
 
 @implementation ImageStructureAnalyser
 
-+ (void)binaryArrayFromImage:(NSImage*)image
-                      blockSize:(int)blockSize
-                    completion:(void (^)(NSArray *imageArray))completion
-{
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-        NSImage *blackWhiteImage = [image toBlackAndWhiteBlocks];
-        NSMutableArray *imageArray = [blackWhiteImage toBinaryArrayWithBlockSize:blockSize];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            completion(imageArray);
-        });
-    });
-}
-
 + (void)blocksFromImage:(NSImage*)image
               blockSize:(int)blockSize
         blockCalculated:(void (^)(NSDictionary *imageBinaryBlock))blockCalculated

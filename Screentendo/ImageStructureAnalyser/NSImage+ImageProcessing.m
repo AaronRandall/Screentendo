@@ -14,17 +14,11 @@
 
 - (NSImage*)toBlackAndWhiteBlocks {
     NSImage *image = self;
+    
     image = [self motionBlurImage:image];
-   // [self saveImage:image filename:@"3_motion_blurred.png"];
-    
     image = [self luminanceFilterImage:image];
-   // [self saveImage:image filename:@"4_luminance_filter.png"];
-    
     image = [self pixelateImage:image];
-   // [self saveImage:image filename:@"5_pixelated.png"];
-    
     image = [self blackAndWhiteImage:image];
-   // [self saveImage:image filename:@"6_black_white.png"];
     
     return image;
 }
@@ -64,38 +58,6 @@
     }
     
     completion(imageArray);
-}
-
-- (NSMutableArray*)toBinaryArrayWithBlockSize:(int)blockSize {
-    NSMutableArray *images = [self splitImageIntoBlocks:self withBlockSize:blockSize];
-    
-    int width = (int)self.size.width/blockSize;
-    int height = (int)self.size.height/blockSize;
-    
-    NSMutableArray *imageArray = [NSMutableArray arrayOfWidth:width andHeight:height];
-    
-    // Calculate the average color of the blocks
-    int counter = 0;
-    for (int y = 0; y < height; y++) {
-        for (int x = 0; x < width; x++) {
-            NSImage *theImage = images[counter];
-            counter = counter + 1;
-            
-            NSColor *averageColor = [self averageColor:theImage];
-            NSNumber *avgColor = [NSNumber numberWithInt:0];
-            
-            if (averageColor.redComponent > 0.7) {
-                // Mostly white image, no need to change value
-            } else {
-                // Mostly black image
-                avgColor = [NSNumber numberWithInt:1];
-            }
-            
-            [[imageArray objectAtIndex:x] setObject:avgColor atIndex:y];
-        }
-    }
-    
-    return imageArray;
 }
 
 - (NSMutableArray *)splitImageIntoBlocks:(NSImage *)image withBlockSize:(NSInteger)blockSize

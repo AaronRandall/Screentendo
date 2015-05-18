@@ -12,7 +12,6 @@
 @interface NSImage (ImageProcessing)
 
 - (NSImage*)toBlackAndWhiteBlocks;
-- (NSMutableArray*)toBinaryArrayWithBlockSize:(int)blockSize;
 - (void)toBinaryArrayWithBlockSize:(int)blockSize
                    blockCalculated:(void (^)(NSDictionary *imageBinaryBlock))blockCalculated
                         completion:(void (^)(NSArray *imageBinaryArray))completion;
