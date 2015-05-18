@@ -17,9 +17,9 @@
              completion:(void (^)(NSArray *imageBinaryArray))completion
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-        NSImage *blackWhiteImage = [image toBlackAndWhiteBlocks];
+        NSImage *blackAndWhiteImage = [image toBlackAndWhiteBlocks];
         
-        [blackWhiteImage toBinaryArrayWithBlockSize:blockSize blockCalculated:^(NSDictionary *imageBinaryBlock) {
+        [blackAndWhiteImage toBinaryArrayWithBlockSize:blockSize blockCalculated:^(NSDictionary *imageBinaryBlock) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 blockCalculated(imageBinaryBlock);
             });

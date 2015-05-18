@@ -15,7 +15,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "72"
             endingLineNumber = "72"
-            landmarkName = "-toBinaryArrayWithBlockSize:"
+            landmarkName = "-splitImageIntoBlocks:withBlockSize:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -31,7 +31,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "20"
             endingLineNumber = "20"
-            landmarkName = "+binaryArrayFromImage:blockSize:completion:"
+            landmarkName = "+blocksFromImage:blockSize:blockCalculated:completion:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -47,8 +47,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "98"
             endingLineNumber = "98"
-            landmarkName = "-toBinaryArrayWithBlockSize:"
-            landmarkType = "5">
+            landmarkName = "@implementation NSImage(ImageProcessing)"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -63,7 +63,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "22"
             endingLineNumber = "22"
-            landmarkName = "+binaryArrayFromImage:blockSize:completion:"
+            landmarkName = "+blocksFromImage:blockSize:blockCalculated:completion:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -79,7 +79,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "29"
             endingLineNumber = "29"
-            landmarkName = "-toBlackAndWhiteBlocks"
+            landmarkName = "-toBinaryArrayWithBlockSize:blockCalculated:completion:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -159,7 +159,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "26"
             endingLineNumber = "26"
-            landmarkName = "-toBlackAndWhiteBlocks"
+            landmarkName = "-toBinaryArrayWithBlockSize:blockCalculated:completion:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -175,7 +175,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "19"
             endingLineNumber = "19"
-            landmarkName = "+binaryArrayFromImage:blockSize:completion:"
+            landmarkName = "+blocksFromImage:blockSize:blockCalculated:completion:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -191,7 +191,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "19"
             endingLineNumber = "19"
-            landmarkName = "+binaryArrayFromImage:blockSize:completion:"
+            landmarkName = "+blocksFromImage:blockSize:blockCalculated:completion:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

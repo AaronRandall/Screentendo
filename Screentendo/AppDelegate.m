@@ -59,11 +59,6 @@ const float transparentAlphaValue = 0.4f;
 }
 
 - (void)makeWindowOpaque {
-   // [NSAnimationContext runAnimationGroup:^(NSAnimationContext *context) {
-   //     context.duration = 2.f;
-   //     self.window.animator.alphaValue = 1;
-   // } completionHandler:nil];
-    
     self.window.opaque = YES;
     self.window.alphaValue = 1;
 }

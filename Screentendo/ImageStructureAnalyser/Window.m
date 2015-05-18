@@ -30,20 +30,20 @@
     return _windowDictionary[@"kCGWindowOwnerName"];
 }
 
-- (CGRect)bounds {
-    NSDictionary *b = _windowDictionary[@"kCGWindowBounds"];
-    
-    CGRect rect = CGRectMake([b[@"X"] floatValue], [b[@"Y"] floatValue], [b[@"Width"] floatValue], [b[@"Height"] floatValue]);
-    
-    return rect;
-}
-
 - (int)number {
     return [_windowDictionary[@"kCGWindowNumber"] intValue];
 }
 
 - (int)layer {
     return [_windowDictionary[@"kCGWindowLayer"] intValue];
+}
+
+- (CGRect)bounds {
+    NSDictionary *b = _windowDictionary[@"kCGWindowBounds"];
+    
+    CGRect rect = CGRectMake([b[@"X"] floatValue], [b[@"Y"] floatValue], [b[@"Width"] floatValue], [b[@"Height"] floatValue]);
+    
+    return rect;
 }
 
 - (NSImage*)takeScreenshot {
@@ -83,7 +83,6 @@
         if (window.layer != layer) {
             continue;
         } else {
-            NSLog(@"");
             if (window.name.length > 0 &&
                 ![window.ownerName isEqualToString:@"Xcode"]) {
                 if (indexCounter == index) {
@@ -115,16 +114,14 @@
     Window *topLevelWindow   = [Window getWindowAtLayer:0 andIndex:1];
     
     NSImage *screenimage = [topLevelWindow takeScreenshot];
-  //  [self saveImage:screenimage filename:@"1_screenshot.png"];
     
     // Crop the top-level window relative to the screentendo window
-    float xDiff = abs(topLevelWindow.bounds.origin.x - screentendoWindow.bounds.origin.x);
-    float yDiff = abs(topLevelWindow.bounds.origin.y - screentendoWindow.bounds.origin.y);
+    float xDiff = fabs(topLevelWindow.bounds.origin.x - screentendoWindow.bounds.origin.x);
+    float yDiff = fabs(topLevelWindow.bounds.origin.y - screentendoWindow.bounds.origin.y);
+    
     CGRect rect = CGRectMake(xDiff, yDiff, screentendoWindow.bounds.size.width, screentendoWindow.bounds.size.height);
     CGImageRef cImage = CGImageCreateWithImageInRect([self nsImageToCGImageRef:screenimage], rect);
-    
     NSImage *image = [[NSImage alloc] initWithCGImage:cImage size:rect.size];
-  //  [self saveImage:image filename:@"2_cropped_screenshot.png"];
     
     return image;
 }

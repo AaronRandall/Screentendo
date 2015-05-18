@@ -19,13 +19,13 @@
     NSMutableArray *_blocks;
     SKSpriteNode *_background;
 
-    BOOL _isJumping;
-    BOOL _isFacingLeft;
-
     BOOL _leftPressed;
     BOOL _rightPressed;
     BOOL _upPressed;
     BOOL _downPressed;
+    
+    BOOL _playerSpriteIsJumping;
+    BOOL _playerSpriteIsFacingLeft;
 
     int _frameCount;
     int _animationTicker;
@@ -153,8 +153,8 @@ const uint32_t noCategory = 0x1 << 3;
         CGPoint location = [event locationInNode:self];
 
         [self setScenePhysics];
-        [self renderCloudSpriteAtPositionX:self.blockSize*4 y:self.frame.size.height/1.2];
-        [self renderCloudSpriteAtPositionX:self.frame.size.width/1.5 y:self.frame.size.height/1.5];
+        [self renderCloudSpriteAtPositionX:self.frame.size.width/3.5 y:self.frame.size.height/1.2];
+        [self renderCloudSpriteAtPositionX:self.frame.size.width/1.3 y:self.frame.size.height/1.1];
         [self renderPlayerSpriteAtPositionX:location.x y:location.y + 230];
 
         [_background removeFromParent];
@@ -286,10 +286,10 @@ const uint32_t noCategory = 0x1 << 3;
     float jumpImpulse = [physicsRatios[[NSNumber numberWithInt:self.blockSize]] floatValue];
 
     if (_upPressed) {
-        if (!_isJumping) {
-            _isJumping = YES;
+        if (!_playerSpriteIsJumping) {
+            _playerSpriteIsJumping = YES;
             [_sprite.physicsBody applyImpulse:CGVectorMake(0.0f, jumpImpulse) atPoint:_sprite.position];
-            if (_isFacingLeft) {
+            if (_playerSpriteIsFacingLeft) {
                 [self changeSpriteTexture:@"player-jumping-left"];
             } else {
                 [self changeSpriteTexture:@"player-jumping-right"];
@@ -300,21 +300,21 @@ const uint32_t noCategory = 0x1 << 3;
     }
 
     if (_rightPressed) {
-        _isFacingLeft = NO;
-        if (!_isJumping) {
+        _playerSpriteIsFacingLeft = NO;
+        if (!_playerSpriteIsJumping) {
             [self changeSpriteTexture:[NSString stringWithFormat:@"player-running-%i-right",_animationTicker]];
         }
         xDelta = +deltaChange;
     } else if (_leftPressed) {
-        _isFacingLeft = YES;
-        if (!_isJumping) {
+        _playerSpriteIsFacingLeft = YES;
+        if (!_playerSpriteIsJumping) {
             [self changeSpriteTexture:[NSString stringWithFormat:@"player-running-%i-left",_animationTicker]];
         }
         xDelta = -deltaChange;
     }
 
     if (!_upPressed && !_downPressed && !_rightPressed && !_leftPressed) {
-        if (_isFacingLeft) {
+        if (_playerSpriteIsFacingLeft) {
             [self changeSpriteTexture:@"player-standing-left"];
         } else {
             [self changeSpriteTexture:@"player-standing-right"];
@@ -395,7 +395,7 @@ const uint32_t noCategory = 0x1 << 3;
 }
 
 - (void)didBeginContact:(SKPhysicsContact *)contact {
-    _isJumping = NO;
+    _playerSpriteIsJumping = NO;
 
     SKPhysicsBody *playerBody = contact.bodyA;
     SKPhysicsBody *blockBody  = contact.bodyB;
