@@ -6,7 +6,7 @@ What
 ====
 A desktop app that allows you to select a region of the screen, and have that selection converted into a playable level of Mario.
 
-[Demo gif]
+![](https://github.com/AaronRandall/Screentendo/blob/master/Screentendo/Screentendo.gif)
 
 Why
 ====

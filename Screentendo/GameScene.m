@@ -357,10 +357,14 @@ const uint32_t noCategory = 0x1 << 3;
     [self addChild:debris3];
     [self addChild:debris4];
 
-    [debris1.physicsBody applyImpulse:CGVectorMake(0.05f, 0.2f) atPoint:blockDebris.position];
-    [debris2.physicsBody applyImpulse:CGVectorMake(-0.05f, 0.2f) atPoint:blockDebris.position];
-    [debris3.physicsBody applyImpulse:CGVectorMake(0.05f, 0.1f) atPoint:blockDebris.position];
-    [debris4.physicsBody applyImpulse:CGVectorMake(-0.05f, 0.1f) atPoint:blockDebris.position];
+    float xD = 0.03f;
+    float y1D = 0.115f;
+    float y2D = 0.065f;
+    
+    [debris1.physicsBody applyImpulse:CGVectorMake(xD, y1D) atPoint:blockDebris.position];
+    [debris2.physicsBody applyImpulse:CGVectorMake(-xD, y1D) atPoint:blockDebris.position];
+    [debris3.physicsBody applyImpulse:CGVectorMake(xD, y2D) atPoint:blockDebris.position];
+    [debris4.physicsBody applyImpulse:CGVectorMake(-xD, y2D) atPoint:blockDebris.position];
     [block removeFromParent];
 }
 
