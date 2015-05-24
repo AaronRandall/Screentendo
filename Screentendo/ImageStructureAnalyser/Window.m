@@ -115,7 +115,7 @@
     
     NSImage *screenimage = [topLevelWindow takeScreenshot];
     
-    // Crop the top-level window relative to the screentendo window
+    // Crop the top-level window relative to the current window
     float xDiff = fabs(topLevelWindow.bounds.origin.x - screentendoWindow.bounds.origin.x);
     float yDiff = fabs(topLevelWindow.bounds.origin.y - screentendoWindow.bounds.origin.y);
     

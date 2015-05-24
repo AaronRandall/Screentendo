@@ -22,7 +22,7 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "../screentendo/Screentendo/ImageStructureAnalyser/ImageStructureAnalyser.m"
@@ -38,7 +38,7 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Screentendo/ImageStructureAnalyser/NSImage+ImageProcessing.m"
@@ -54,7 +54,7 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Screentendo/ImageStructureAnalyser/ImageStructureAnalyser.m"
@@ -65,6 +65,38 @@
             endingLineNumber = "22"
             landmarkName = "+blocksFromImage:blockSize:blockCalculated:completion:"
             landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__79+[ImageStructureAnalyser blocksFromImage:blockSize:blockCalculated:completion:]_block_invoke"
+                  moduleName = "Screentendo"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/aaronrandall/projects/Screentendo/Screentendo/ImageStructureAnalyser/ImageStructureAnalyser.m"
+                  timestampString = "454159862.027556"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "22"
+                  endingLineNumber = "22"
+                  offsetFromSymbolStart = "86">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__79+[ImageStructureAnalyser blocksFromImage:blockSize:blockCalculated:completion:]_block_invoke_2"
+                  moduleName = "Screentendo"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/aaronrandall/projects/Screentendo/Screentendo/ImageStructureAnalyser/ImageStructureAnalyser.m"
+                  timestampString = "454159862.027914"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "22"
+                  endingLineNumber = "22"
+                  offsetFromSymbolStart = "47">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -118,7 +150,7 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "No"
+            shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Screentendo/ImageStructureAnalyser/NSImage+ImageProcessing.m"
@@ -134,7 +166,7 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "No"
+            shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Screentendo/ImageStructureAnalyser/NSImage+ImageProcessing.m"
@@ -177,12 +209,44 @@
             endingLineNumber = "19"
             landmarkName = "+blocksFromImage:blockSize:blockCalculated:completion:"
             landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "+[ImageStructureAnalyser blocksFromImage:blockSize:blockCalculated:completion:]"
+                  moduleName = "Screentendo"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/aaronrandall/projects/Screentendo/Screentendo/ImageStructureAnalyser/ImageStructureAnalyser.m"
+                  timestampString = "454173055.455486"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "19"
+                  endingLineNumber = "19"
+                  offsetFromSymbolStart = "134">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__79+[ImageStructureAnalyser blocksFromImage:blockSize:blockCalculated:completion:]_block_invoke"
+                  moduleName = "Screentendo"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/aaronrandall/projects/Screentendo/Screentendo/ImageStructureAnalyser/ImageStructureAnalyser.m"
+                  timestampString = "454173055.455735"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "19"
+                  endingLineNumber = "19"
+                  offsetFromSymbolStart = "15">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Screentendo/ImageStructureAnalyser/ImageStructureAnalyser.m"
@@ -193,6 +257,38 @@
             endingLineNumber = "19"
             landmarkName = "+blocksFromImage:blockSize:blockCalculated:completion:"
             landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "+[ImageStructureAnalyser blocksFromImage:blockSize:blockCalculated:completion:]"
+                  moduleName = "Screentendo"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/aaronrandall/projects/Screentendo/Screentendo/ImageStructureAnalyser/ImageStructureAnalyser.m"
+                  timestampString = "454159862.030875"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "19"
+                  endingLineNumber = "19"
+                  offsetFromSymbolStart = "134">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__79+[ImageStructureAnalyser blocksFromImage:blockSize:blockCalculated:completion:]_block_invoke"
+                  moduleName = "Screentendo"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/aaronrandall/projects/Screentendo/Screentendo/ImageStructureAnalyser/ImageStructureAnalyser.m"
+                  timestampString = "454159862.03112"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "19"
+                  endingLineNumber = "19"
+                  offsetFromSymbolStart = "15">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -208,6 +304,54 @@
             startingLineNumber = "163"
             endingLineNumber = "163"
             landmarkName = "-renderSceneWithEvent:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Screentendo/ImageStructureAnalyser/NSImage+ImageProcessing.m"
+            timestampString = "454159848.927348"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "18"
+            endingLineNumber = "18"
+            landmarkName = "-toBlackAndWhiteBlocks"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Screentendo/ImageStructureAnalyser/NSImage+ImageProcessing.m"
+            timestampString = "454159849.618364"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "19"
+            endingLineNumber = "19"
+            landmarkName = "-toBlackAndWhiteBlocks"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Screentendo/ImageStructureAnalyser/NSImage+ImageProcessing.m"
+            timestampString = "454159850.587915"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "21"
+            endingLineNumber = "21"
+            landmarkName = "-toBlackAndWhiteBlocks"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
